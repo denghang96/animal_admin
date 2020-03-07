@@ -36,7 +36,7 @@ export default {
       state.userName = name
     },
     setAccess (state, access) {
-      state.access = access
+      state.access = access || []
     },
     setToken (state, token) {
       state.token = token
@@ -81,7 +81,7 @@ export default {
           userName,
           password
         }).then(res => {
-          const data = res.data
+          const data = res.data.data
           commit('setToken', data.token)
           resolve()
         }).catch(err => {
