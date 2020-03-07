@@ -1,13 +1,12 @@
 import axios from '@/libs/api.request'
 import config from '@/config/index'
 
-export const getTableData = () => {
+/*获得用户列表*/ 
+export const getUserData = () => {
     return axios.request({
       url: config.reqUrl + 'user/getList',
       method: 'get',
-      headers: config.headers,
-      param: {
-          userName: 'wyl'
-      }
+      headers: config.header
     })
   }
+  
