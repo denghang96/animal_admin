@@ -1,6 +1,10 @@
 import axios from 'axios'
 import store from '@/store'
 // import { Spin } from 'iview'
+//请求的时候带上Token
+headers: {
+  Authorization: localStorage.getItem("token")
+}
 const addErrorLog = errorInfo => {
   const { statusText, status, request: { responseURL } } = errorInfo
   let info = {
