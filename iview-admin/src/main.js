@@ -50,3 +50,5 @@ new Vue({
   store,
   render: h => h(App)
 })
+Vue.prototype.$java_url = '1'
+const java_url = "http://localhost:8080/";
