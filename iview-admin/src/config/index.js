@@ -18,7 +18,7 @@ export default {
    * @description api请求基础路径
    */
   baseUrl: {
-    dev: 'http://127.0.0.1:8080/',
+    dev: 'http://192.168.0.111:8080/',
     pro: 'https://produce.com'
   },
   /**
@@ -34,10 +34,10 @@ export default {
       developmentOff: true // 设为true后在开发环境不会收集错误信息，方便开发中排查错误
     }
   },
-  reqUrl: 'http://127.0.0.1:8080/',
+  reqUrl: 'http://192.168.0.111:8080/',
 
   header: {
     ContentType: 'application/json',
-    Authorization: localStorage.getItem("token")
-  },
+    Authorization: localStorage.getItem ('token')
+  }
 }
