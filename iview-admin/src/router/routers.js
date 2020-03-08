@@ -434,6 +434,27 @@ export default [
     ]
   },
   {
+    path: '/animalmanage',
+    name: '动物管理',
+    meta: {
+      icon: 'ios-body',
+      title: '动物管理'
+    },
+    component: Main,
+    children: [
+      {
+        path: 'add',
+        name: '动物管理',
+        meta: {
+          icon: 'md-add',
+          title: '动物管理',
+          hideInBread: false
+        },
+        component: () => import('@/view/animal/animal.vue')
+      },
+    ]
+  },
+  {
     path: '/argu',
     name: 'argu',
     meta: {

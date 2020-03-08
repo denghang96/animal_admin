@@ -1,4 +1,5 @@
 import axios from '@/libs/api.request'
+import config from '@/config/index'
 
 export const login = ({ userName, password }) => {
   return axios.request({
@@ -14,10 +15,8 @@ export const login = ({ userName, password }) => {
 
 export const getUserInfo = (token) => {
   return axios.request({
-    url: 'get_info',
-    params: {
-      token
-    },
+    url: 'user/getUserInfo',
+    headers: config.header,
     method: 'get'
   })
 }
