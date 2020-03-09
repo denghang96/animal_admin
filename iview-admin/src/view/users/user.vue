@@ -250,7 +250,7 @@ export default {
             res.data.data.records[i].userImage = axios.baseUrl + 'image/showImage/?path=' + res.data.data.records[i].userImage
           }
           this.tableData = res.data.data.records
-          this.total = res.data.data.total
+          this.total = parseInt(res.data.data.total)
         }
       })
     },

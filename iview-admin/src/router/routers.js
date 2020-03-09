@@ -366,15 +366,15 @@ export default [
         name: 'directive_page',
         meta: {
           icon: 'ios-navigate',
-          title: '用户管理'
+          title: '指令'
         },
         component: () => import('@/view/directive/directive.vue')
       }
     ]
   },
   {
-    path: '/multilevel',
-    name: '用户管理',
+    path: '/user',
+    name: '用户',
     meta: {
       icon: 'ios-body',
       title: '用户管理'
@@ -382,54 +382,35 @@ export default [
     component: Main,
     children: [
       {
-        path: 'level_2_1',
-        name: '新增用户',
+        path: 'user',
+        name: '用户管理',
         meta: {
           icon: 'md-add',
-          title: '新增用户',
+          title: '用户管理',
           hideInBread: false
         },
         component: () => import('@/view/users/user.vue')
       },
+    ]
+  },
+  {
+    path: '/user_user',
+    name: '个人中心',
+    meta: {
+      icon: 'ios-body',
+      title: '个人中心'
+    },
+    component: Main,
+    children: [
       {
-        path: 'level_2_2',
-        name: 'level_2_2',
+        path: '/',
+        name: '个人中心',
         meta: {
-          access: ['super_admin'],
-          icon: 'md-funnel',
-          showAlways: true,
-          title: '二级-2'
+          icon: 'md-add',
+          title: '个人中心',
+          hideInBread: false
         },
-        component: parentView,
-        children: [
-          {
-            path: 'level_2_2_1',
-            name: 'level_2_2_1',
-            meta: {
-              icon: 'md-funnel',
-              title: '三级'
-            },
-            component: () => import('@/view/multilevel/level-2-2/level-2-2-1.vue')
-          },
-          {
-            path: 'level_2_2_2',
-            name: 'level_2_2_2',
-            meta: {
-              icon: 'md-funnel',
-              title: '三级'
-            },
-            component: () => import('@/view/multilevel/level-2-2/level-2-2-2.vue')
-          }
-        ]
-      },
-      {
-        path: 'level_2_3',
-        name: 'level_2_3',
-        meta: {
-          icon: 'md-funnel',
-          title: '二级-3'
-        },
-        component: () => import('@/view/multilevel/level-2-3.vue')
+        component: () => import('@/view/users/user_user.vue')
       }
     ]
   },
