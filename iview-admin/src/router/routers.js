@@ -455,6 +455,27 @@ export default [
     ]
   },
   {
+    path: '/approval',
+    name: '审批管理',
+    meta: {
+      icon: 'ios-body',
+      title: '审批管理'
+    },
+    component: Main,
+    children: [
+      {
+        path: 'adoptmanage',
+        name: '领养申请审批',
+        meta: {
+          icon: 'md-add',
+          title: '领养申请审批',
+          hideInBread: false
+        },
+        component: () => import('@/view/approval/adoptapproval.vue')
+      },
+    ]
+  },
+  {
     path: '/argu',
     name: 'argu',
     meta: {
