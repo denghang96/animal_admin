@@ -153,7 +153,6 @@
 </template>
 <script>
 import Tables from '_c/tables'
-import { getTableData } from '@/api/data'
 import axios from '@/libs/api.request'
 import config from '@/config/index'
 export default {
@@ -499,8 +498,6 @@ export default {
           this.form.animalImg = this.imgList[i] + ","
         }
       }
-      console.log( this.form.animalImg)
-      console.log(this.imgList)
     },
     /**
      * 删除一张图片
@@ -515,7 +512,6 @@ export default {
           this.editform.animalImg = this.editFormImgList[i] + ","
         }
       }
-      console.log(this.editFormImgList)
     },
     /**
      * 调用删除动物的接口
@@ -544,11 +540,6 @@ export default {
       this.form.animalDate = value
       this.editform.animalDate = value
     },
-  },
-  mounted () {
-    getTableData().then(res => {
-      this.tableData = res.data
-    })
   }
 }
 </script>
