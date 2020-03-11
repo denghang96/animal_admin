@@ -1,94 +1,76 @@
 <template>
     <div>
-        <Row :gutter="16" index="">
-          <Col span="5" v-for="item in randomMovieList">
-            <Card style="width:350px">
+        <Card style="width:350px;display: inline-block; margin-right: 15px;" v-for="item in tableData">
             <p slot="title">
                 <Icon type="ios-film-outline"></Icon>
                 Classic film
             </p>
             <a href="#" slot="extra" @click.prevent="changeLimit">
                 <Icon type="ios-loop-strong"></Icon>
-                Change
+                {{item.animalName}}
             </a>
             <ul>
-                <li v-for="item in randomMovieList">
-                    <a :href="item.url" target="_blank">{{ item.name }}</a>
-                    <span>
-                        <Icon type="ios-star" v-for="n in 4" :key="n"></Icon><Icon type="ios-star" v-if="item.rate >= 9.5"></Icon><Icon type="ios-star-half" v-else></Icon>
-                        {{ item.rate }}
-                    </span>
-                </li>
+            <div style="text-align:center">
+                <img :src="item.animalImg">
+                <h3>A high quality UI Toolkit based on Vue.js</h3>
+            </div>
             </ul>
         </Card>
-          </Col>
-        </Row>
     </div>
 </template>
 <script>
+import config from '@/config/index'
+import axios from '@/libs/api.request'
 export default {
     data(){
         return {
             limitNum: 5,
             limitFrom: 0,
-            randomMovieList: [
-                {
-                    name: '肖申克的救赎',
-                    url: 'https://movie.douban.com/subject/1292052/',
-                    rate: 9.6
-                },
-                {
-                    name: '这个杀手不太冷',
-                    url: 'https://movie.douban.com/subject/1295644/',
-                    rate: 9.4
-                },
-                {
-                    name: '霸王别姬',
-                    url: 'https://movie.douban.com/subject/1291546/',
-                    rate: 9.5
-                },
-                {
-                    name: '阿甘正传',
-                    url: 'https://movie.douban.com/subject/1292720/',
-                    rate: 9.4
-                },
-                {
-                    name: '美丽人生',
-                    url: 'https://movie.douban.com/subject/1292063/',
-                    rate: 9.5
-                },
-                {
-                    name: '千与千寻',
-                    url: 'https://movie.douban.com/subject/1291561/',
-                    rate: 9.2
-                },
-                {
-                    name: '辛德勒的名单',
-                    url: 'https://movie.douban.com/subject/1295124/',
-                    rate: 9.4
-                },
-                {
-                    name: '海上钢琴师',
-                    url: 'https://movie.douban.com/subject/1292001/',
-                    rate: 9.2
-                },
-                {
-                    name: '机器人总动员',
-                    url: 'https://movie.douban.com/subject/2131459/',
-                    rate: 9.3
-                },
-                {
-                    name: '盗梦空间',
-                    url: 'https://movie.douban.com/subject/3541415/',
-                    rate: 9.2
-                }
-            ]
+            tableData:[],
+            current:  1,
+            total: 10,
+            query: {
+                animalType: '',
+                animalNo: '',
+                animalName: '',
+                animalStatus: ''
+            },
         }
+    },
+    created() {
+        this.getAnimalTable()
     },
     methods: {
         changeLimit () {
             this.limitFrom = this.limitFrom === 0 ? 5 : 0;
-        }
+        },
+        /**
+         * 根据条件查询动物列表
+         */
+        getAnimalTable(){
+            axios.request({
+                url: 'animal/getList',
+                method: 'get',
+                headers: config.header,
+                params: {
+                current: this.current,
+                size: 10,
+                animalType: this.query.animalType,
+                animalNo: this.query.animalNo,
+                animalName: this.query.animalName,
+                animalStatus: this.query.animalStatus,
+                }
+            }).then(res => {
+                console.log(res)
+                if(res.data.status == 0){
+                for(var i = 0; i < res.data.data.records.length; i++){
+                    res.data.data.records[i].animalMoney = res.data.data.records[i].animalMoney/100
+                }
+                this.tableData = res.data.data.records
+                this.total = parseInt(res.data.data.total)
+                }
+            })
+        },
     }
 }
 </script>
