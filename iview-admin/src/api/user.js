@@ -16,7 +16,10 @@ export const login = ({ userName, password }) => {
 export const getUserInfo = (token) => {
   return axios.request({
     url: 'user/getUserInfo',
-    headers: config.header,
+    headers:{
+      ContentType: 'application/json',
+      Authorization: localStorage.getItem ('token')
+    },
     method: 'get'
   })
 }
