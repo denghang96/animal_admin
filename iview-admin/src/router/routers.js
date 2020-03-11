@@ -415,6 +415,27 @@ export default [
     ]
   },
   {
+    path: '/animal_user',
+    name: '宠物之家',
+    meta: {
+      icon: 'ios-body',
+      title: '宠物之家'
+    },
+    component: Main,
+    children: [
+      {
+        path: '/',
+        name: '宠物之家',
+        meta: {
+          icon: 'md-add',
+          title: '宠物之家',
+          hideInBread: false
+        },
+        component: () => import('@/view/animal/animal_user.vue')
+      }
+    ]
+  },
+  {
     path: '/animalmanage',
     name: '动物管理',
     meta: {
