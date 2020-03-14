@@ -2,16 +2,16 @@
   <div>
     <Row type="flex" justify="start" class="code-row-bg" style="margin-bottom:22px;">
         <Col span="4">
-          <Input search enter-button placeholder="输入用户名" />
+          <Input search enter-button placeholder="输入用户名" v-model="userNameSearch" @on-search="userSearch()"/>
         </Col>
         <Col span="4" offset="2">
-          <Input search enter-button placeholder="输入手机号" />
+          <Input search enter-button placeholder="输入手机号" v-model="userTelSearch" @on-search="userSearch()"/>
         </Col>
         <Col span="4" offset="2" style="margin-top:10px;">
-          <RadioGroup v-model="userSex">
+          <RadioGroup v-model="userSexSearch" @on-change="userSearch()">
               <Radio label="1">全部</Radio>
-              <Radio label="2">男</Radio>
-              <Radio label="3">女</Radio>
+              <Radio label="男">男</Radio>
+              <Radio label="女">女</Radio>
           </RadioGroup>
         </Col>
         <Col span="4" style="text-align:right;" offset="2">
@@ -132,7 +132,10 @@ export default {
         { title: '会员到期日期', key: 'expireTime' },
         { title: '操作',slot: 'action' }
       ],
-      userSex: '1',
+      userNameSearch: '',
+      userTelSearch: '',
+      userSexSearch: '1',
+      userSexSearch2: '',
       tableData: [],
       userData: '',
       total: 100,
@@ -247,7 +250,7 @@ export default {
             res.data.data.records[i].userImage = axios.baseUrl + 'image/showImage/?path=' + res.data.data.records[i].userImage
           }
           this.tableData = res.data.data.records
-          this.total = res.data.data.total
+          this.total = parseInt(res.data.data.total)
         }
       })
     },
@@ -304,7 +307,36 @@ export default {
         }
       })
     },
-    cancel () {}
+    cancel () {},
+    //搜索功能
+    userSearch(){
+      if (this.userSexSearch === "1"){
+        this.userSexSearch2 = ""
+      }else{
+        this.userSexSearch2 = this.userSexSearch
+      }
+      axios.request({
+        url: 'user/getList',
+        method: 'get',
+        headers: config.header,
+        params: {
+          current: this.current,
+          size: 10,
+          userName: this.userNameSearch,
+          userSex: this.userSexSearch2,
+          userTel: this.userTelSearch
+        }
+      }).then(res => {
+        if(res.status == 200){
+          for(var i = 0; i < res.data.data.records.length; i++){
+            res.data.data.records[i].userMoney = res.data.data.records[i].userMoney/10
+            res.data.data.records[i].userImage = axios.baseUrl + 'image/showImage/?path=' + res.data.data.records[i].userImage
+          }
+          this.tableData = res.data.data.records
+          this.total = res.data.data.total
+        }
+      })
+    }
 }}
 </script>
 
