@@ -473,6 +473,16 @@ export default [
         },
         component: () => import('@/view/approval/adoptapproval.vue')
       },
+      {
+        path: 'fostermanage',
+        name: '寄养申请审批',
+        meta: {
+          icon: 'md-add',
+          title: '寄养申请审批',
+          hideInBread: false
+        },
+        component: () => import('@/view/foster/fosterapproval.vue')
+      },
     ]
   },
   {

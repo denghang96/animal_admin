@@ -246,8 +246,8 @@ export default {
           label: '已助养'
         },
         {
-          value: '寄养',
-          label: '寄养'
+          value: '正在寄养',
+          label: '正在寄养'
         },
         {
           value: '寄养结束',
@@ -340,7 +340,6 @@ export default {
         }else {
           this.form.animalImg = this.imgList[i] + ","
         }
-        
       }
     },
     /**
