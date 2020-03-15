@@ -22,7 +22,8 @@
     <Table border :columns="columns" :data="tableData" :height="540" style="margin-top:10px">
       <template slot-scope="{ row, index }" slot="action">
           <Button type="primary" size="small" style="margin-right: 5px" @click="editAnimal(index)">编辑</Button>
-          <Button type="error" size="small" @click="remove(index)">删除</Button>
+          <Button type="error" size="small" @click="remove(index)"  style="margin-right: 5px">删除</Button>
+          <Button type="success" size="small" v-if="row.animalStatus=='已领养'" @click="addInterview(index)">添加回访</Button>
       </template>
     </Table>
     <div style="margin: 10px;overflow: hidden">
@@ -149,6 +150,35 @@
             </FormItem>
         </Form>
     </Modal>
+
+    <!--新增添加回访的模态框-->
+    <Modal
+        v-model="addInterviewModal"
+        width="1000px"
+        title="新增回访记录">
+        <div slot="footer"></div>
+        <Form ref="interviewform" :model="interviewform" :label-width="80">
+            <FormItem label="动物编号" prop="animalNo" required>
+                <Input v-model="interviewform.animalNo" placeholder="请输入动物编号"></Input>
+            </FormItem>
+            <FormItem label="回访日期" prop="adoptDate">
+                <DatePicker type="date" format="yyyy-MM-dd" placeholder="回访日期" v-model="interviewform.adoptDate" @on-change="getDate1" style="width:250px"></DatePicker>
+            </FormItem>
+            <FormItem label="领养者姓名" prop="userName">
+                <Input v-model="interviewform.userName" placeholder="领养者姓名"></Input>
+            </FormItem>
+            <FormItem label="联系方式" prop="userTel">
+              <Input v-model="interviewform.userTel" placeholder="联系方式"></Input>
+            </FormItem>
+            <FormItem label="回访描述" prop="adoptDesc">
+                <Input v-model="interviewform.adoptDesc" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="回访描述"></Input>
+            </FormItem>
+            <FormItem style="text-align:center">
+              <Button type="primary" @click="handleInterviewformSubmit('interviewform')">提交</Button>
+              <Button @click="handleReset('interviewform')" style="margin-left: 8px">重置</Button>
+            </FormItem>
+        </Form>
+    </Modal>
   </div>
 </template>
 <script>
@@ -201,7 +231,7 @@ export default {
         { title: '动物状态', key: 'animalStatus' },
         { title: '金额', key: 'animalMoney' },
         { title: '录入日期', key: 'animalDate' },
-        { title: '操作',slot: 'action' }
+        { title: '操作',slot: 'action', width: 250}
       ],
       tableData: [],
       animalList: [
@@ -301,7 +331,18 @@ export default {
       fileUploadUrl: axios.baseUrl + 'image/upload',
       header: config.header,
       imgList: [],
-      editFormImgList:[]
+      editFormImgList:[],
+
+      addInterviewModal:false,
+      interviewform: {
+        id: 0,
+        userName: '',
+        userTel: '',
+        adoptDate: '',
+        animalNo: 0,
+        animalId: 0,
+        adoptDesc: ''
+      },
     }
   },
   created() {
@@ -420,7 +461,6 @@ export default {
       } else if(this.form.projectType == "助养") {
         this.form.animalStatus = "待助养"
       } 
-      this.form.animalMoney = this.form.animalMoney*100
       axios.request({
         url: 'animal/add',
         method: 'post',
@@ -441,6 +481,7 @@ export default {
      */
     edit(index) {
       this.editform.animalMoney = this.editform.animalMoney*100
+      debugger
       if(this.editform.projectType == "领养") {
         this.editform.animalStatus = "待领养"
       } else if(this.editform.projectType == "寄养") {
@@ -449,7 +490,6 @@ export default {
       } else if(this.editform.projectType == "助养") {
         this.editform.animalStatus = "待助养"
       } 
-      this.editform.animalMoney = this.editform.animalMoney*100
       axios.request({
         url: 'animal/update',
         method: 'post',
@@ -458,6 +498,7 @@ export default {
       }).then(res => {
         if(res.data.status == 0) {
           this.$Message.success("编辑成功");
+          this.editform.animalMoney = this.editform.animalMoney/100
           this.getAnimalTable()
         } else {
           this.$Message.error("编辑失败");
@@ -538,6 +579,50 @@ export default {
     getDate(value){
       this.form.animalDate = value
       this.editform.animalDate = value
+    },
+    getDate1(value){
+      this.interviewform.adoptDate = value
+    },
+
+    /**
+     * 添加回访信息
+     */
+    addInterview(index) {
+      this.addInterviewModal = true
+      this.interviewform.animalId = this.tableData[index].id
+      this.interviewform.animalNo = this.tableData[index].animalNo
+    },
+    /**
+     * 新增回访时点击提交表单按钮
+     */
+    handleInterviewformSubmit (name) {
+      this.$refs[name].validate((valid) => {//表单合法性进行验证
+        if (valid) {
+            //保存
+          this.addInterviewsure()
+        } else {
+            this.$Message.error('请确认表单是否填写完整');
+        }
+      })
+    },
+    /**
+     * 调用新增回访的接口
+     */
+    addInterviewsure() {
+      axios.request({
+        url: 'interview/add',
+        method: 'post',
+        headers: config.header,
+        data: this.interviewform
+      }).then(res => {
+        if(res.data.status == 0) {
+          this.$Message.success("添加成功");
+          this.addInterviewModal = false
+        } else {
+          this.$Message.error("添加失败");
+        }
+      })
+
     },
   }
 }

@@ -457,6 +457,69 @@ export default [
     ]
   },
   {
+    path: '/supportmanage',
+    name: '助养记录',
+    meta: {
+      icon: 'ios-body',
+      title: '助养记录'
+    },
+    component: Main,
+    children: [
+      {
+        path: 'add',
+        name: '助养记录',
+        meta: {
+          icon: 'md-add',
+          title: '助养记录',
+          hideInBread: false
+        },
+        component: () => import('@/view/support/support.vue')
+      },
+    ]
+  },
+  {
+    path: '/interviewmanage',
+    name: '领养回访管理',
+    meta: {
+      icon: 'ios-body',
+      title: '领养回访管理'
+    },
+    component: Main,
+    children: [
+      {
+        path: 'add',
+        name: '领养回访',
+        meta: {
+          icon: 'md-add',
+          title: '领养回访',
+          hideInBread: false
+        },
+        component: () => import('@/view/interview/interview.vue')
+      },
+    ]
+  },
+  {
+    path: '/consumemanage',
+    name: '消费记录',
+    meta: {
+      icon: 'ios-body',
+      title: '消费记录'
+    },
+    component: Main,
+    children: [
+      {
+        path: 'add',
+        name: '消费记录',
+        meta: {
+          icon: 'md-add',
+          title: '消费记录',
+          hideInBread: false
+        },
+        component: () => import('@/view/consume/consume.vue')
+      },
+    ]
+  },
+  {
     path: '/approval',
     name: '审批管理',
     meta: {
