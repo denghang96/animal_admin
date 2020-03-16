@@ -30,6 +30,7 @@ export default {
     handleSubmit ({ userName, password }) {
       this.handleLogin({ userName, password }).then(res => {
         this.getUserInfo().then(res => {
+          localStorage.setItem("user",JSON.stringify(res))
           this.$router.push({
             name: this.$config.homeName
           })

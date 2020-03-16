@@ -22,7 +22,7 @@
                 </ul>
                 <div style="margin-top:10px;">
                     <Button  type="error" style="margin-right:100px;" @click="clickBtn(index)">{{item.label}}</Button>
-                    <Button  type="default" style="">宠物详情</Button>
+                    <Button  type="default" style="" @click="detail(index)">宠物详情</Button>
                 </div>
             </Card>
         </Scroll>
@@ -143,7 +143,13 @@ export default {
                     }
                 })
              }else{
-
+                this.$router.push({  
+                    path: '/animal-adopt',   
+                    name: 'animal-adopt',  
+                    params: {   
+                        id: this.tableData[index].id
+                    }
+                })
              }
          },
          ok(){
@@ -170,7 +176,6 @@ export default {
                 headers: config.header,
                 data: this.payAnimal
             }).then(res => {
-                console.log(res)
                 this.$Message.success(this.tableData[this.tableDataIndex].animalName + '感谢你!')
                 this.tableData = []
                 this.getAnimalTable()
@@ -178,6 +183,16 @@ export default {
          },
          cancel2(){
 
+         },
+         //跳转到宠物详情界面
+         detail(index){
+             this.$router.push({  
+                path: '/animal-detail',   
+                name: 'animal-detail',  
+                params: {   
+                    id: this.tableData[index].id
+                }
+            }) 
          }
     }
 }

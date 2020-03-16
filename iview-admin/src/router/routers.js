@@ -42,7 +42,7 @@ export default [
         name: 'home',
         meta: {
           hideInMenu: true,
-          title: '页',
+          title: '首页',
           notCache: true,
           icon: 'md-home'
         },
@@ -432,6 +432,24 @@ export default [
           hideInBread: false
         },
         component: () => import('@/view/animal/animal_user.vue')
+      },
+      {
+        path: '/animal-detail',
+        name: 'animal-detail',
+        meta: {
+          hideInMenu: true,
+          title: '宠物详情',
+        },
+        component: () => import('@/view/animal/animal_detail.vue')
+      },
+      {
+        path: '/animal-adopt',
+        name: 'animal-adopt',
+        meta: {
+          hideInMenu: true,
+          title: '领养申请',
+        },
+        component: () => import('@/view/animal/animal_adopt.vue')
       }
     ]
   },
@@ -474,6 +492,27 @@ export default [
           hideInBread: false
         },
         component: () => import('@/view/approval/adoptapproval.vue')
+      },
+    ]
+  },
+  {
+    path: '/comment',
+    name: '评论管理',
+    meta: {
+      icon: 'ios-body',
+      title: '评论管理'
+    },
+    component: Main,
+    children: [
+      {
+        path: 'comment',
+        name: '评论管理',
+        meta: {
+          icon: 'md-add',
+          title: '评论管理',
+          hideInBread: false
+        },
+        component: () => import('@/view/comment/comment.vue')
       },
     ]
   },
