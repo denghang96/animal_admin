@@ -126,7 +126,7 @@ export default {
       ],
       query: {
         applyStatus: '',
-        applyStatus: ''
+        applyDate: ''
       },
       editAdoptModal: false,
       editform: {
