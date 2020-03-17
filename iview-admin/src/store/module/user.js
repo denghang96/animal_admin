@@ -35,9 +35,9 @@ export default {
     setUserName (state, name) {
       state.userName = name
     },
-    // setAccess (state, access) {
-    //   state.access = access || []
-    // },
+    setAccess (state, access) {
+      state.access = access || []
+    },
     setToken (state, token) {
       state.token = token
       setToken(token)
@@ -114,7 +114,7 @@ export default {
             //commit('setAvatar', data.avatar)
             //commit('setUserName', data.userName)
             //commit('setUserId', data.user_id)
-            commit('setAccess', [])
+            commit('setAccess', data.access)
             commit('setHasGetInfo', true)
             resolve(data)
           }).catch(err => {
