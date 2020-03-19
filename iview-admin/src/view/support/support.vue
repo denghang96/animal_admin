@@ -54,25 +54,23 @@ export default {
      * 根据条件查询助养列表
      */
     getSupportTable(){
+      let _this = this
       axios.request({
         url: 'support/getList',
         method: 'get',
         headers: config.header,
         params: {
-          current: this.current,
+          current: _this.current,
           size: 10,
-          animalType: this.query.animalType,
-          animalNo: this.query.animalNo,
-          animalName: this.query.animalName,
-          animalStatus: this.query.animalStatus,
+          helpDate: _this.query.helpDate
         }
       }).then(res => {
         if(res.data.status == 0){
           for(var i = 0; i < res.data.data.records.length; i++){
             res.data.data.records[i].animalMoney = res.data.data.records[i].animalMoney/100
           }
-          this.tableData = res.data.data.records
-          this.total = parseInt(res.data.data.total)
+          _this.tableData = res.data.data.records
+          _this.total = parseInt(res.data.data.total)
         }
       })
     },
