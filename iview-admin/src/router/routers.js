@@ -404,13 +404,43 @@ export default [
     children: [
       {
         path: '/',
-        name: '个人中心',
+        name: '个人信息',
         meta: {
           icon: 'md-add',
-          title: '个人中心',
+          title: '个人信息',
           hideInBread: false
         },
         component: () => import('@/view/users/user_user.vue')
+      },
+      {
+        path: '/',
+        name: '我的寄养',
+        meta: {
+          icon: 'md-add',
+          title: '我的寄养',
+          hideInBread: false
+        },
+        component: () => import('@/view/users/user_user.vue')
+      },
+      {
+        path: '/',
+        name: '我的领养',
+        meta: {
+          icon: 'md-add',
+          title: '我的领养',
+          hideInBread: false
+        },
+        component: () => import('@/view/users/user_user.vue')
+      },
+      {
+        path: '/',
+        name: '助养记录',
+        meta: {
+          icon: 'md-add',
+          title: '助养记录',
+          hideInBread: false
+        },
+        component: () => import('@/view/support/support_user.vue')
       }
     ]
   },

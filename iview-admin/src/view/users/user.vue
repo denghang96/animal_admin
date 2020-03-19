@@ -218,6 +218,7 @@ export default {
                       title: '成功',
                       desc: false ? '' : '新增成功！'
                   });
+                  this.getUserTable()
                 }else{
                   this.$Notice.error({
                       title: '错误',
@@ -244,10 +245,14 @@ export default {
           size: 10
         }
       }).then(res => {
-        if(res.status == 200){
+        if(res.data.status == 0){
           for(var i = 0; i < res.data.data.records.length; i++){
             res.data.data.records[i].userMoney = res.data.data.records[i].userMoney/10
-            res.data.data.records[i].userImage = axios.baseUrl + 'image/showImage/?path=' + res.data.data.records[i].userImage
+            if(res.data.data.records[i].userType == 1){
+              res.data.data.records[i].userType = '管理员'
+            }else{
+              res.data.data.records[i].userType = '客户'
+            }
           }
           this.tableData = res.data.data.records
           this.total = parseInt(res.data.data.total)
