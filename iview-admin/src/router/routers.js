@@ -121,21 +121,21 @@ export default [
         component: () => import('@/view/users/user_user.vue')
       },
       {
-        path: '/',
+        path: '/adoptapprovat_user',
         name: '我的领养',
         meta: {
           icon: 'md-add',
           title: '我的领养',
           hideInBread: false
         },
-        component: () => import('@/view/users/user_user.vue')
+        component: () => import('@/view/approval/adoptapprovat_user.vue')
       },
       {
-        path: '/',
-        name: '助养记录',
+        path: '/support_user',
+        name: '我的助养',
         meta: {
           icon: 'md-add',
-          title: '助养记录',
+          title: '我的助养',
           hideInBread: false
         },
         component: () => import('@/view/support/support_user.vue')

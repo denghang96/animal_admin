@@ -37,7 +37,7 @@ export default {
           return h('div', [
             h('img', {
               domProps: {
-                'src': params.row.userImage
+                'src': params.row.animalTiltleImg
               },
               style: {
                 display: 'block',
