@@ -31,19 +31,35 @@
         </Col>
         <Col span="8">
             <h3 style="margin-bottom:20px;margin-left:15px;">头像信息:</h3>
-            <div style="width:500px;height:500px;background-color:#ffffff;">
+            <div style="width:500px;height:450px;background-color:#ffffff;position:relative;">
                 <div style="padding-top:20px;margin-left:15px;">
                     <Upload 
                     :action="fileUploadUrl"
                     :on-success="handleEditUploadSuccess"
                     :headers="header">
-                    <Button icon="ios-cloud-upload-outline">上传头像图片</Button>
+                    <Button style="float:left;" icon="ios-cloud-upload-outline">上传头像图片</Button>
                     </Upload>
                 </div>
-                <div style="width:400px;height:200px;margin: 0 auto;background-color:#f9f9f9;">
-
+                <div style="position:absolute;top:20px;right:30px;">
+                  <Button type="success" @click="saveImg">保存</Button>
                 </div>
-            <h3 style="margin-bottom:20px;margin-left:15px;">系统默认头像:</h3>
+                <div style="width:400px;height:150px;margin: 0 auto;background-color:#f9f9f9;">
+                      <div style="width:50px;height:50px;margin: 0 auto;padding-top:50px;">
+                          <img :src="userImg2" style="width:50px;height:50px;">
+                      </div>
+                </div>
+                <h3 style="margin-bottom:15px;margin-left:15px;margin-top:15px;">系统默认头像:</h3>
+                <div style="padding-left:3rem;">
+                    <div v-for="(item,index) in imgData.slice(0, 5)" style="margin:15px;float:left;" @click="changeImg(item.value)">
+                        <img :src="item.value" style="width:50px;height:50px;">
+                    </div>
+                </div>
+                <div style="padding-left:3rem;">
+                    <div v-for="(item,index) in imgData.slice(5, 10)" style="margin:15px;float:left;" @click="changeImg(item.value)">
+                        <img :src="item.value" style="width:50px;height:50px;">
+                    </div>
+                </div>
+                    
             </div>
         </Col>
     </Row>
@@ -83,8 +99,25 @@ export default {
         passwdCheck: '',
         expireTime: '',
         userMoney: 0,
-        fileUploadUrl: axios.baseUrl + 'image/upload',
+        userImg: '../img/1.jpg'
       },
+      userImg2: require('../img/1.jpg'),
+      imgData: [
+        {value: require('../img/1.jpg')},
+        {value: require('../img/2.jpg')},
+        {value: require('../img/3.jpg')},
+        {value: require('../img/4.jpg')},
+        {value: require('../img/5.jpg')},
+        {value: require('../img/9.jpg')},
+        {value: require('../img/10.jpg')},
+        {value: require('../img/11.jpg')},
+        {value: require('../img/12.jpg')},
+        {value: require('../img/13.jpg')}
+      ],
+      fileUploadUrl: axios.baseUrl + 'image/upload',
+      header: config.header,
+      imgList: [],
+      editFormImgList:[],
       ruleValidate: {
         userName: [
           { required: true, message: '请输入用户名称！', trigger: 'blur' }
@@ -136,14 +169,29 @@ export default {
     },
     handleEditUploadSuccess(res, file) {
         this.editFormImgList.push(axios.baseUrl + 'image/showImage/?path=' + res)
-        this.adoptForm.familyImg = ''
-        for(var i = 0; i < this.editFormImgList.length;  i++) {
-            if(i > 0) {
-            this.adoptForm.familyImg = this.adoptForm.familyImg+','+ this.editFormImgList[i] + ","
-            }else {
-            this.adoptForm.familyImg = this.editFormImgList[i] + ","
-            }}
+        this.userImg2 = axios.baseUrl + 'image/showImage/?path=' + res
     },
+    changeImg (value) {
+      this.userImg2 = value
+    },
+    saveImg () {
+      if(this.userImg2 != ""){
+        axios.request({
+          url: 'user/update',
+          method: 'post',
+          headers: config.header,
+          data: {
+            userImage: this.userImg2
+          }
+        }).then(res => {
+          if(res.data.status == 0) {
+            this.$Message.success("修改成功");
+          } else {
+            this.$Message.error("修改失败");
+          }
+        })
+      }
+    }
 }}
 </script>
 <style>

@@ -180,7 +180,7 @@ export default {
           } }
         ],
         userMoney: [
-          { type: 'number', message: '请输入数字!', trigger: 'blur' }
+          
         ]
       }
     }
@@ -247,7 +247,7 @@ export default {
       }).then(res => {
         if(res.data.status == 0){
           for(var i = 0; i < res.data.data.records.length; i++){
-            res.data.data.records[i].userMoney = res.data.data.records[i].userMoney/10
+            res.data.data.records[i].userMoney = res.data.data.records[i].userMoney/100
             if(res.data.data.records[i].userType == 1){
               res.data.data.records[i].userType = '管理员'
             }else{
