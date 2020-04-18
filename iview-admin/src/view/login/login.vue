@@ -18,6 +18,7 @@
 <script>
 import LoginForm from '_c/login-form'
 import { mapActions } from 'vuex'
+import config from '@/config/index'
 export default {
   components: {
     LoginForm
@@ -31,6 +32,8 @@ export default {
       this.handleLogin({ userName, password }).then(res => {
         this.getUserInfo().then(res => {
           localStorage.setItem("user",JSON.stringify(res))
+          config.homeName = JSON.parse(localStorage.getItem("user")).homeName
+          this.$config.homeName = config.homeName
           this.$router.push({
             name: this.$config.homeName
           })
