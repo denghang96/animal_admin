@@ -9,6 +9,9 @@
         <!-- <DropdownItem name="message">
           消息中心<Badge style="margin-left: 10px" :count="messageUnreadCount"></Badge>
         </DropdownItem> -->
+        <DropdownItem name="message">
+          个人中心<Badge style="margin-left: 10px"></Badge>
+        </DropdownItem>
         <DropdownItem name="logout">退出登录</DropdownItem>
       </DropdownMenu>
     </Dropdown>
@@ -43,7 +46,7 @@ export default {
     },
     message () {
       this.$router.push({
-        name: 'message_page'
+        name: 'person_info'
       })
     },
     handleClick (name) {

@@ -26,9 +26,9 @@ export default {
     messageContentStore: {}
   },
   mutations: {
-    // setAvatar (state, avatarPath) {
-    //   state.avatarImgPath = avatarPath
-    // },
+    setAvatar (state, avatarPath) {
+      state.avatarImgPath = avatarPath
+    },
     // setUserId (state, id) {
     //   state.userId = id
     // },
@@ -93,8 +93,9 @@ export default {
     handleLogOut ({ state, commit }) {
       return new Promise((resolve, reject) => {
         logout(state.token).then(() => {
-          commit('setToken', '')
-          commit('setAccess', [])
+          // commit('setToken', '')
+          // commit('setAccess', [])
+          localStorage.clear()
           resolve()
         }).catch(err => {
           reject(err)
@@ -103,7 +104,6 @@ export default {
         // commit('setToken', '')
         // commit('setAccess', [])
         // resolve()
-        localStorage.clear()
       })
     },
     // 获取用户相关信息
@@ -117,6 +117,7 @@ export default {
             //commit('setUserId', data.user_id)
             commit('setAccess', data.access)
             commit('setHasGetInfo', true)
+            commit('setAvatar', data.userImage)
             resolve(data)
           }).catch(err => {
             reject(err)

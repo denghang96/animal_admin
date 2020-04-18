@@ -34,6 +34,11 @@ export default {
           localStorage.setItem("user",JSON.stringify(res))
           config.homeName = JSON.parse(localStorage.getItem("user")).homeName
           this.$config.homeName = config.homeName
+          const header = {
+            ContentType: 'application/json',
+            Authorization: localStorage.getItem ('token')
+          }
+          this.$config.header = header
           this.$router.push({
             name: this.$config.homeName
           })
