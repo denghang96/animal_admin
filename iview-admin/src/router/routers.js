@@ -38,53 +38,48 @@ export default [
     },
     children: [
       {
-        path: '/home',
-        name: 'home',
+        path: '/animalHome',
+        name: 'animalHome',
+        meta: {
+          access: ["animalHome"],
+          title: '宠物之家',
+          hideInMenu: true,
+          notCache: true,
+          icon: 'md-home'
+        },
+        component: () => import('@/view/animal/animal_user.vue')
+      },
+      {
+        path: '/adminHome',
+        name: 'adminHome',
         meta: {
           hideInMenu: true,
+          access:["adminHome"],
           title: '首页',
           notCache: true,
           icon: 'md-home'
         },
-        component: () => import('@/view/single-page/home')
-      }
-    ]
-  },
-  {
-    path: '/message',
-    name: 'message',
-    component: Main,
-    meta: {
-      hideInBread: true,
-      hideInMenu: true
-    },
-    children: [
-      {
-        path: 'message_page',
-        name: 'message_page',
-        meta: {
-          icon: 'md-notifications',
-          title: '消息中心'
-        },
-        component: () => import('@/view/single-page/message/index.vue')
+        component: () => import('@/view/single-page/home/home')
       }
     ]
   },
   {
     path: '/user',
-    name: '用户',
+    name: 'user',
     meta: {
       icon: 'ios-body',
-      title: '用户管理'
+      title: '用户管理',
+      access: ["user"]
     },
     component: Main,
     children: [
       {
-        path: 'user',
-        name: '用户管理',
+        path: '/usermanage',
+        name: 'usermanage',
         meta: {
           icon: 'md-add',
           title: '用户管理',
+          access: ["usermanage"],
           hideInBread: false
         },
         component: () => import('@/view/users/user.vue')
@@ -92,81 +87,81 @@ export default [
     ]
   },
   {
-    path: '/user_user',
-    name: '个人中心',
+    path: '/person_center',
+    name: 'person_center',
     meta: {
       icon: 'ios-body',
-      title: '个人中心'
+      title: '个人中心',
+      access:["personCenter"]
     },
     component: Main,
     children: [
       {
-        path: '/',
-        name: '个人信息',
+        path: '/person_info',
+        name: 'person_info',
         meta: {
           icon: 'md-add',
           title: '个人信息',
-          hideInBread: false
+          hideInBread: false,
+          access:["personInfo"]
         },
         component: () => import('@/view/users/user_user.vue')
       },
       {
-        path: '/',
-        name: '我的寄养',
+        path: '/myFoster',
+        name: 'myFoster',
         meta: {
           icon: 'md-add',
           title: '我的寄养',
-          hideInBread: false
+          hideInBread: false,
+          access:["myFoster"]
         },
         component: () => import('@/view/users/user_user.vue')
       },
       {
-        path: '/adoptapprovat_user',
-        name: '我的领养',
+        path: '/myAdopt',
+        name: 'myAdopt',
         meta: {
           icon: 'md-add',
           title: '我的领养',
-          hideInBread: false
+          hideInBread: false,
+          access:["myAdopt"]
         },
         component: () => import('@/view/approval/adoptapprovat_user.vue')
       },
       {
-        path: '/support_user',
-        name: '我的助养',
+        path: '/mySupport',
+        name: 'mySupport',
         meta: {
           icon: 'md-add',
           title: '我的助养',
-          hideInBread: false
+          hideInBread: false,
+          access:["mySupport"]
         },
         component: () => import('@/view/support/support_user.vue')
       }
     ]
   },
   {
-    path: '/animal_user',
-    name: '宠物之家',
+    path: '/animal_home',
+    name: 'animal_home',
     meta: {
       icon: 'ios-body',
-      title: '宠物之家'
+      title: '宠物之家',
+      hideInMenu: true,
+      notCache: true,
+      access:["animalHome"]
     },
     component: Main,
     children: [
-      {
-        path: '/',
-        name: '宠物之家',
-        meta: {
-          icon: 'md-add',
-          title: '宠物之家',
-          hideInBread: false
-        },
-        component: () => import('@/view/animal/animal_user.vue')
-      },
       {
         path: '/animal-detail',
         name: 'animal-detail',
         meta: {
           hideInMenu: true,
           title: '宠物详情',
+          notCache: true,
+          access:["animalHome"]
         },
         component: () => import('@/view/animal/animal_detail.vue')
       },
@@ -176,6 +171,8 @@ export default [
         meta: {
           hideInMenu: true,
           title: '领养申请',
+          notCache: true,
+          access:["animalHome"]
         },
         component: () => import('@/view/animal/animal_adopt.vue')
       }
@@ -183,20 +180,22 @@ export default [
   },
   {
     path: '/animalmanage',
-    name: '动物管理',
+    name: 'animalmanage',
     meta: {
       icon: 'ios-body',
-      title: '动物管理'
+      title: '动物管理',
+      access:["animalmanage"]
     },
     component: Main,
     children: [
       {
-        path: 'add',
-        name: '动物管理',
+        path: '/animalAdd',
+        name: 'animalAdd',
         meta: {
           icon: 'md-add',
           title: '动物管理',
-          hideInBread: false
+          hideInBread: false,
+          access:["animalAdd"]
         },
         component: () => import('@/view/animal/animal.vue')
       },
@@ -207,17 +206,19 @@ export default [
     name: '助养记录',
     meta: {
       icon: 'ios-body',
-      title: '助养记录'
+      title: '助养记录',
+      access:["supportmanage"]
     },
     component: Main,
     children: [
       {
-        path: 'add',
-        name: '助养记录',
+        path: '/supportRecorde',
+        name: 'supportRecorde',
         meta: {
           icon: 'md-add',
           title: '助养记录',
-          hideInBread: false
+          hideInBread: false,
+          access:["supportRecorde"]
         },
         component: () => import('@/view/support/support.vue')
       },
@@ -225,20 +226,22 @@ export default [
   },
   {
     path: '/interviewmanage',
-    name: '领养回访管理',
+    name: 'interviewmanage',
     meta: {
       icon: 'ios-body',
-      title: '领养回访管理'
+      title: '领养回访管理',
+      access:["interviewmanage"]
     },
     component: Main,
     children: [
       {
-        path: 'add',
-        name: '领养回访',
+        path: '/interview',
+        name: 'interview',
         meta: {
           icon: 'md-add',
           title: '领养回访',
-          hideInBread: false
+          hideInBread: false,
+          access:["interview"]
         },
         component: () => import('@/view/interview/interview.vue')
       },
@@ -246,74 +249,79 @@ export default [
   },
   {
     path: '/consumemanage',
-    name: '消费记录',
+    name: 'consumemanage',
     meta: {
       icon: 'ios-body',
       title: '消费记录',
-      access: ["consumemanage"]
+      access:["consumemanage"]
     },
     component: Main,
     children: [
       {
-        path: 'add',
-        name: '消费记录',
+        path: '/consume',
+        name: 'consume',
         meta: {
           icon: 'md-add',
           title: '消费记录',
           hideInBread: false,
-          access: ["consume"]
+          access:["consume"]
         },
         component: () => import('@/view/consume/consume.vue')
       },
     ]
   },
   {
-    path: '/approval',
-    name: '审批管理',
+    path: '/approvalmanage',
+    name: 'approvalmanage',
     meta: {
       icon: 'ios-body',
-      title: '审批管理'
+      title: '审批管理',
+      access:["approvalmanage"]
     },
     component: Main,
     children: [
       {
-        path: 'adoptmanage',
-        name: '领养申请审批',
+        path: '/adoptmanage',
+        name: 'adoptmanage',
         meta: {
           icon: 'md-add',
           title: '领养申请审批',
-          hideInBread: false
+          hideInBread: false,
+          access:["adoptmanage"]
         },
         component: () => import('@/view/approval/adoptapproval.vue')
       },
       {
-        path: 'fostermanage',
-        name: '寄养申请审批',
+        path: '/fostermanage',
+        name: 'fostermanage',
         meta: {
           icon: 'md-add',
           title: '寄养申请审批',
-          hideInBread: false
+          hideInBread: false,
+          access:["fostermanage"]
         },
         component: () => import('@/view/foster/fosterapproval.vue')
       },
     ]
   },
   {
-    path: '/comment',
-    name: '评论管理',
+    path: '/commentmanage',
+    name: 'commentmanage',
     meta: {
       icon: 'ios-body',
-      title: '评论管理'
+      title: '评论管理',
+      access:["commentmanage"]
     },
     component: Main,
     children: [
       {
         path: 'comment',
-        name: '评论管理',
+        name: 'comment',
         meta: {
           icon: 'md-add',
           title: '评论管理',
-          hideInBread: false
+          hideInBread: false,
+          access:["comment"]
         },
         component: () => import('@/view/comment/comment.vue')
       },

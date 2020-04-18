@@ -103,6 +103,7 @@ export default {
         // commit('setToken', '')
         // commit('setAccess', [])
         // resolve()
+        localStorage.clear()
       })
     },
     // 获取用户相关信息
