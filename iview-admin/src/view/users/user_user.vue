@@ -185,9 +185,9 @@ export default {
           }
         }).then(res => {
           if(res.data.status == 0) {
-            this.$Message.success("修改成功");
+            this.$Message.success("修改成功")
           } else {
-            this.$Message.error("修改失败");
+            this.$Message.error("修改失败")
           }
         })
       }
