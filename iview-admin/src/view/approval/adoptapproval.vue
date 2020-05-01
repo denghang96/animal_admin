@@ -2,6 +2,9 @@
   <div>
     <Row class="code-row-bg">
       <Col span="4">    
+        <Input v-model="query.userName" placeholder="申请人"></Input>
+      </Col>
+      <Col span="4">    
         <Select v-model="query.applyStatus" placeholder="申请状态" clearable>
           <Option v-for="item in applyStatusList" :value="item.value" :key="item.value">{{ item.label }}</Option>
         </Select>
@@ -126,7 +129,8 @@ export default {
       ],
       query: {
         applyStatus: '',
-        applyDate: ''
+        applyDate: '',
+        userName: ''
       },
       editAdoptModal: false,
       editform: {
@@ -191,7 +195,8 @@ export default {
           current: this.current,
           size: 10,
           applyDate: this.query.applyDate,
-          applyStatus: this.query.applyStatus
+          applyStatus: this.query.applyStatus,
+          userName: this.query.userName
         }
       }).then(res => {
         if(res.data.status == 0){

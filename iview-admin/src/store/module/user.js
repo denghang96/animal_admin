@@ -81,9 +81,13 @@ export default {
           userName,
           password
         }).then(res => {
-          const data = res.data.data
-          commit('setToken', data.token)
-          resolve()
+          if(res.data.data!='undefined'&&res.data.data!=undefined&&res.data.data!=null&&res.data.data!='null') {
+            const data = res.data.data
+            commit('setToken', data.token)
+            resolve()
+          }else {
+            alert(res.data.msg)
+          }
         }).catch(err => {
           reject(err)
         })

@@ -62,7 +62,7 @@
           <FormItem label="动物健康证明" prop="animalProve">
                 <img :src="item" v-for="(item,index) in editFormImgList" width="100px" @click="showLargeImg(index)" height="100px">
           </FormItem>
-          <FormItem label="寄养均价" prop="applyPrice">
+          <FormItem label="寄养单价/天" prop="applyPrice">
               <Input type="number" v-model="editform.applyPrice"></Input>
           </FormItem>
           <FormItem label="审核意见" prop="opinion">

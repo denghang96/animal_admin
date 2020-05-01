@@ -268,6 +268,17 @@ export default [
         },
         component: () => import('@/view/consume/consume.vue')
       },
+      {
+        path: '/consumeuser',
+        name: 'consumeuser',
+        meta: {
+          icon: 'md-add',
+          title: '消费记录',
+          hideInBread: false,
+          access:["consumeuser"]
+        },
+        component: () => import('@/view/consume/consume_user.vue')
+      },
     ]
   },
   {
