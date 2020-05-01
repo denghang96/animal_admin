@@ -1,9 +1,6 @@
 <template>
   <div>
     <Row class="code-row-bg">
-      <Col span="4">    
-        <Input v-model="query.userName" placeholder="用户名"></Input>
-      </Col>
       <Col span="4" style="margin-left:5px">    
         <DatePicker type="date" format="yyyy-MM-dd" placeholder="助养日期" v-model="query.consumeDate" @on-change="getDate" style="width:250px"></DatePicker>
       </Col>
@@ -51,8 +48,7 @@ export default {
       tableData: [],
       query: {
         consumeDate: '',
-        type: '',
-        userName: ''
+        type: ''
       },
       header: config.header,
       typeList: [
@@ -79,22 +75,22 @@ export default {
      * 根据条件查询助养列表
      */
     getConsumeTable(){
-      const _this= this
+      let _this = this
       axios.request({
         url: 'consume/getList',
         method: 'get',
         headers: config.header,
         params: {
           current: this.current,
-          size: _this.pageSize,
+          size: this.pageSize,
           consumeDate: this.query.consumeDate,
           type: this.query.type,
-          userName: this.query.userName
+          userId: JSON.parse(localStorage.getItem("user")).id
         }
       }).then(res => {
         if(res.data.status == 0){
           this.tableData = res.data.data.records
-          this.total = parseInt(res.data.data.total)
+          _this.total = parseInt(res.data.data.total)
         }
       })
     },

@@ -91,9 +91,9 @@ export default {
   },
   data () {
   return {
-      total: 100,
+      total: 0,
       current: 1,
-      pageSize: 6,
+      pageSize: 10,
       modal2: false,
       formValidate: {
         opinion: [
@@ -236,7 +236,7 @@ export default {
         headers: config.header,
         params: {
           current: this.current,
-          size: 10,
+          size: this.pageSize,
           applyDate: this.query.applyDate,
           applyStatus: this.query.applyStatus
         }

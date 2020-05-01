@@ -16,13 +16,13 @@
       </i-col>
       <i-col :md="24" :lg="16" style="margin-bottom: 20px;">
         <Card shadow>
-          <chart-bar style="height: 300px;" :value="barData" text="每周用户活跃量"/>
+          <chart-bar style="height: 300px;" :value="barData" text="动物状态数"/>
         </Card>
       </i-col>
     </Row>
     <Row>
       <Card shadow>
-        <example style="height: 310px;"/>
+        <example style="height: 310px;" />
       </Card>
     </Row>
   </div>
@@ -48,20 +48,13 @@ export default {
     return {
       inforCardData: [],
       pieData: [],
-      barData: {
-        Mon: 13253,
-        Tue: 34235,
-        Wed: 26321,
-        Thu: 12340,
-        Fri: 24643,
-        Sat: 1322,
-        Sun: 1324
-      }
+      barData: {}
     }
   },
   created() {
     this.getWebsiteNum()
     this.getAnimalTypeNum()
+    this.getAnimalStatusNum()
   },
   methods: {
     //查询最顶部的网站相关统计总数
@@ -93,6 +86,20 @@ export default {
       }).then(res => {
         var _data = res.data.data
         _this.pieData = Object.values(_data)
+      })
+    },
+    //获取不同状态的动物总数
+    getAnimalStatusNum() {
+      let _this = this
+      axios.request({
+        url: 'statistics/getAnimalStatusNum/',
+        method: 'get',
+        headers: config.header
+      }).then(res => {
+        const _data = res.data.data
+        for(let i = 0; i < _data.length; i++) {
+          _this.$set(_this.barData,_data[i].status,parseInt(_data[i].num))
+        }
       })
     }
   },

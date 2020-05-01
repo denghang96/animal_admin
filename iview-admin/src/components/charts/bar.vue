@@ -14,6 +14,13 @@ export default {
     text: String,
     subtext: String
   },
+  watch: {
+    value: {
+      handler() {
+        this.drowBar()
+      },deep:true
+    }
+  },
   data () {
     return {
       dom: null
@@ -22,10 +29,9 @@ export default {
   methods: {
     resize () {
       this.dom.resize()
-    }
-  },
-  mounted () {
-    this.$nextTick(() => {
+    },
+    drowBar() {
+      this.$nextTick(() => {
       let xAxisData = Object.keys(this.value)
       let seriesData = Object.values(this.value)
       let option = {
@@ -50,6 +56,10 @@ export default {
       this.dom.setOption(option)
       on(window, 'resize', this.resize)
     })
+    }
+  },
+  mounted () {
+    this.drowBar()
   },
   beforeDestroy () {
     off(window, 'resize', this.resize)
