@@ -292,15 +292,19 @@ export default {
     },
     //确定充值
     ok () {
+      if(!(/^\d+$/.test(this.userMoney2))){
+        alert("输入格式不正确！")
+        return
+      }
       var _this = this
       axios.request({
-        url: 'user/update',
+        url: 'user/addMoney',
         method: 'post',
         cache:false,
         headers: config.header,
         data: {
           id: this.userData.id,
-          userMoney: parseInt(this.userMoney2) * 10 + parseInt(this.userData.userMoney) * 10
+          userMoney: parseInt(this.userMoney2) * 100 + parseInt(this.userData.userMoney) * 100
         } 
       }).then(res => {
         if(res.status == 200){

@@ -116,7 +116,7 @@ export default [
           hideInBread: false,
           access:["myFoster"]
         },
-        component: () => import('@/view/users/user_user.vue')
+        component: () => import('@/view/foster/fosterapproval_user.vue')
       },
       {
         path: '/myAdopt',
