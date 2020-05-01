@@ -11,7 +11,7 @@
     <Row :gutter="20" style="margin-top: 10px;">
       <i-col :md="24" :lg="8" style="margin-bottom: 20px;">
         <Card shadow>
-          <chart-pie style="height: 300px;" :value="pieData" text="用户访问来源"></chart-pie>
+          <chart-pie style="height: 300px;" :value="pieData" text="各动物占比"></chart-pie>
         </Card>
       </i-col>
       <i-col :md="24" :lg="16" style="margin-bottom: 20px;">
@@ -29,6 +29,8 @@
 </template>
 
 <script>
+import axios from '@/libs/api.request'
+import config from '@/config/index'
 import InforCard from '_c/info-card'
 import CountTo from '_c/count-to'
 import { ChartPie, ChartBar } from '_c/charts'
@@ -44,21 +46,8 @@ export default {
   },
   data () {
     return {
-      inforCardData: [
-        { title: '新增用户', icon: 'md-person-add', count: 803, color: '#2d8cf0' },
-        { title: '累计点击', icon: 'md-locate', count: 232, color: '#19be6b' },
-        { title: '新增问答', icon: 'md-help-circle', count: 142, color: '#ff9900' },
-        { title: '分享统计', icon: 'md-share', count: 657, color: '#ed3f14' },
-        { title: '新增互动', icon: 'md-chatbubbles', count: 12, color: '#E46CBB' },
-        { title: '新增页面', icon: 'md-map', count: 14, color: '#9A66E4' }
-      ],
-      pieData: [
-        { value: 335, name: '直接访问' },
-        { value: 310, name: '邮件营销' },
-        { value: 234, name: '联盟广告' },
-        { value: 135, name: '视频广告' },
-        { value: 1548, name: '搜索引擎' }
-      ],
+      inforCardData: [],
+      pieData: [],
       barData: {
         Mon: 13253,
         Tue: 34235,
@@ -68,6 +57,43 @@ export default {
         Sat: 1322,
         Sun: 1324
       }
+    }
+  },
+  created() {
+    this.getWebsiteNum()
+    this.getAnimalTypeNum()
+  },
+  methods: {
+    //查询最顶部的网站相关统计总数
+    getWebsiteNum() {
+      let _this = this
+      axios.request({
+        url: 'statistics/getWebsiteNum/',
+        method: 'get',
+        headers: config.header
+      }).then(res => {
+        var websiteNumVo = res.data.data
+        _this.inforCardData = [
+            { title: '用户总数', icon: 'md-person-add', count: websiteNumVo.userNum, color: '#2d8cf0' },
+            { title: '动物总数', icon: 'md-locate', count: websiteNumVo.animalNum, color: '#19be6b' },
+            { title: '评论总数', icon: 'md-help-circle', count: websiteNumVo.commentNum, color: '#ff9900' },
+            { title: '今日领养', icon: 'md-share', count: websiteNumVo.todayAdopt, color: '#ed3f14' },
+            { title: '今日寄养', icon: 'md-chatbubbles', count: websiteNumVo.todayFoster, color: '#E46CBB' },
+            { title: '今日助养', icon: 'md-map', count: websiteNumVo.todaySupport, color: '#9A66E4' }
+          ]
+      })
+    },
+    //获取不同类型的动物总数
+    getAnimalTypeNum() {
+      let _this = this
+      axios.request({
+        url: 'statistics/getAnimalTypeNum/',
+        method: 'get',
+        headers: config.header
+      }).then(res => {
+        var _data = res.data.data
+        _this.pieData = Object.values(_data)
+      })
     }
   },
   mounted () {
