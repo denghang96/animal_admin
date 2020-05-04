@@ -65,7 +65,7 @@ export default {
             animalData: {},
             animalImgs: [],
             form:{
-                amimalId: '',
+                animalId: '',
                 comment: '',
             },
             current: 1,
@@ -78,7 +78,7 @@ export default {
     },
     methods:{
         getAnimalData(){
-            this.form.amimalId = this.$route.params.id
+            this.form.animalId = this.$route.params.id
             axios.request({
                 url: 'animal/getById',
                 method: 'get',
@@ -102,7 +102,7 @@ export default {
                 method: 'get',
                 headers: config.header,
                 params: {
-                    amimalId: this.$route.params.id,
+                    animalId: this.$route.params.id,
                     current: this.current
                 }
             }).then(res => {
@@ -116,7 +116,7 @@ export default {
         },
         //返回
         back(){
-            this.$router.replace("animal_user") 
+            this.$router.replace("animalHome") 
         },
         comment(){
             axios.request({

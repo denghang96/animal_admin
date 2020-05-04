@@ -60,7 +60,19 @@ export default [
           icon: 'md-home'
         },
         component: () => import('@/view/single-page/home/home')
-      }
+      },
+      
+    {
+      path: '/animalFoster',
+      name: 'animalFoster',
+      meta: {
+        title: '寄养申请',
+        hideInMenu: true,
+        notCache: true,
+        icon: 'md-home'
+      },
+      component: () => import('@/view/animal/animal_foster.vue')
+    },
     ]
   },
   {
@@ -369,6 +381,8 @@ export default [
       }
     ]
   },
+  
+  
   {
     path: '/401',
     name: 'error_401',

@@ -4,27 +4,23 @@
         <Col span="12">
             <Form ref="form1" :model="adoptForm" :rules="formValidate" :label-width="80">
                 <FormItem label="动物类型:" prop="animalType">
-                     <Input v-model="adoptForm.animalType" disabled></Input>
+                     <Select v-model="adoptForm.animalType" placeholder="选择动物">
+                        <Option v-for="item in animalList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                    </Select>
                 </FormItem>
-                <FormItem label="动物昵称:" prop="animalNmae">
-                    <Input v-model="adoptForm.animalName" disabled></Input>
+                <FormItem label="宠物昵称:" prop="animalNmae">
+                    <Input v-model="adoptForm.animalName"></Input>
                 </FormItem>
-                <FormItem label="领养价格:" prop="animalMoney">
-                    <Input v-model="adoptForm.animalMoney" disabled></Input>
+                <FormItem label="联系电话:" prop="userTel" required>
+                    <Input v-model="adoptForm.userTel" placeholder="请输入联系电话"></Input>
                 </FormItem>
-                <FormItem label="联系电话:" prop="adoptTel" required>
-                    <Input v-model="adoptForm.adoptTel" placeholder="请输入联系电话"></Input>
+                <FormItem label="宠物年龄:" prop="animalAge" required>
+                    <Input v-model="adoptForm.animalAge" placeholder="请输入领养原因"></Input>
                 </FormItem>
-                <FormItem label="联系地址:" prop="adoptAddress" required>
-                    <Input v-model="adoptForm.adoptAddress" placeholder="请输入联系地址"></Input>
+                <FormItem label="宠物特征:" prop="animalDesc" required>
+                    <Input v-model="adoptForm.animalDesc" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="请输入领养家庭环境"></Input>
                 </FormItem>
-                <FormItem label="领养原因:" prop="adoptReason" required>
-                    <Input v-model="adoptForm.adoptReason" placeholder="请输入领养原因"></Input>
-                </FormItem>
-                <FormItem label="领养家庭环境描述:" prop="familyDesc" required>
-                    <Input v-model="adoptForm.familyDesc" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="请输入领养家庭环境"></Input>
-                </FormItem>
-                <FormItem label="领养家庭环境图片:" prop="familyImg" required>
+                <FormItem label="宠物图片:" prop="animalProve" required>
                     <img :src="item" v-for="(item,index) in editFormImgList" width="100px" @click="removeImg(index)" height="100px">
                 </FormItem>
                 <FormItem label="申请时间:" prop="applyDate" required>
@@ -65,23 +61,36 @@ export default {
                 amimalId: '',
                 comment: '',
             },
-            //领养表单
+            animalList: [
+                {
+                    value: '猫',
+                    label: '猫'
+                },
+                {
+                    value: '狗',
+                    label: '狗'
+                },
+                {
+                    value: '鼠',
+                    label: '鼠'
+                },
+                {
+                    value: '其他',
+                    label: '其他'
+                }
+            ],
+            //寄养表单
             adoptForm: {
                 userId: JSON.parse(localStorage.getItem("user")).id,
-                animalId: this.$route.params.id,
                 applyDate: '',
                 applyStatus: '待审批',
-                adoptTel: '',
-                adoptAddress: '',
-                adoptReason: '',
-                familyDesc: '',
-                familyImg: '',
-                hasChildren: '',
-                traffiType: '',
+                userTel: '',
                 //动物信息
                 animalName: '',
-                animalMoney: '',
-                animalType: ''
+                animalType: '',
+                animalAge: '',
+                animalDesc: '',
+                animalProve: ''
             },
             formValidate: {
                 animalName: [
@@ -148,8 +157,12 @@ export default {
             }
         },
         handleSubmit1(){
+            if(this.adoptForm.animalDesc == "" && this.adoptForm.animalDesc == "" && this.adoptForm.animalProve == ""&& this.adoptForm.userTel == "" && this.userAge == ""){
+                alert("请输入必填信息!")
+                return
+            }
             axios.request({
-                url: 'adopt/add',
+                url: 'foster/add',
                 method: 'post',
                 headers: config.header,
                 data: this.adoptForm
@@ -171,7 +184,7 @@ export default {
         },
         //返回
         back(){
-            this.$router.replace("animalHome") 
+            this.$router.replace("myFoster") 
         },
         comment(){
             axios.request({
