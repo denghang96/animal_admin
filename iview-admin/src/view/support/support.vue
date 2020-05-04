@@ -2,6 +2,15 @@
   <div>
     <Row class="code-row-bg">
       <Col span="4" style="margin-left:5px">    
+        <Input v-model="query.animalNo" placeholder="动物编号"></Input>
+      </Col>
+      <Col span="4" style="margin-left:5px">    
+        <Input v-model="query.animalName" placeholder="动物名称"></Input>
+      </Col>
+      <Col span="4" style="margin-left:5px">    
+        <Input v-model="query.userName" placeholder="助养者名称"></Input>
+      </Col>
+      <Col span="4" style="margin-left:5px">    
         <DatePicker type="date" format="yyyy-MM-dd" placeholder="助养日期" v-model="query.helpDate" @on-change="getDate" style="width:250px"></DatePicker>
       </Col>
       <Col span="4" style="margin-left:5px">
@@ -29,9 +38,9 @@ export default {
   },
   data () {
     return {
-      total: 100,
+      total: 0,
       current: 1,
-      pageSize: 6,
+      pageSize: 10,
       columns: [
         { title: '动物编号', key: 'animalNo'},
         { title: '动物昵称', key: 'animalName'},
@@ -41,7 +50,10 @@ export default {
       ],
       tableData: [],
       query: {
-        helpDate: ''
+        helpDate: '',
+        animalName: '',
+        animalNo: '',
+        userName: ''
       },
       header: config.header
     }
@@ -61,8 +73,11 @@ export default {
         headers: config.header,
         params: {
           current: _this.current,
-          size: 10,
-          helpDate: _this.query.helpDate
+          size: this.pageSize,
+          helpDate: _this.query.helpDate,
+          animalNo: _this.query.animalNo,
+          userName: _this.query.userName,
+          animalName: _this.query.animalName,
         }
       }).then(res => {
         if(res.data.status == 0){

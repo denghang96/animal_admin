@@ -336,6 +336,17 @@ export default [
         },
         component: () => import('@/view/comment/comment.vue')
       },
+      {
+        path: 'commentuser',
+        name: 'commentuser',
+        meta: {
+          icon: 'md-add',
+          title: '评论管理',
+          hideInBread: false,
+          access:["commentuser"]
+        },
+        component: () => import('@/view/comment/comment_user.vue')
+      },
     ]
   },
   {
