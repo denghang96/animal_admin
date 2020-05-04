@@ -20,7 +20,9 @@
         </Card>
       </i-col>
     </Row>
+    
     <Row>
+      <h2 style="text-align:center">消费走势</h2>
       <Card shadow>
         <example style="height: 310px;" />
       </Card>

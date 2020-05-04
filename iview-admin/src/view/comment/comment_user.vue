@@ -2,9 +2,6 @@
   <div>
     <Row type="flex" justify="start" class="code-row-bg" style="margin-bottom:22px;">
         <Col span="4">
-          <Input v-model="userNameSearch" placeholder="用户昵称" style="width: 300px" />
-        </Col>
-        <Col span="4" offset="2">
           <Input v-model="animalNoSearch" placeholder="动物编号" style="width: 300px" />
         </Col>
         <Col span="4" offset="2">
@@ -82,7 +79,7 @@ export default {
         params: {
           current: this.current,
           size: this.pageSize,
-          userName: this.userNameSearch,
+          userId: JSON.parse(localStorage.getItem("user")).id,
           animalNo: this.animalNoSearch,
           animalName: this.animalNameSearch
         }
