@@ -6,28 +6,63 @@
                 <FormItem label="用户名称" prop="userName">
                     <Input v-model="formValidate.userName" placeholder="请输入用户名称"></Input>
                 </FormItem>
-                <FormItem label="初始密码" prop="loginPwd">
-                    <Input type="password" v-model="formValidate.loginPwd" placeholder="请输入密码！"></Input>
+                <FormItem label="手机号码" prop="userTel">
+                    <Input v-model="formValidate.userTel" placeholder="请输入手机号码！"></Input>
                 </FormItem>
-                <FormItem label="确认密码" prop="passwdCheck">
-                    <Input type="password" v-model="formValidate.passwdCheck" placeholder="请再次输入密码！"></Input>
+                <FormItem label="用户年龄" prop="userAge">
+                    <Input v-model="formValidate.userAge" placeholder="请输入自己年龄!"></Input>
+                </FormItem>
+                <FormItem label="用户性别" prop="userAge">
+                    <RadioGroup v-model="formValidate.userSex">
+                        <Radio label="男">男</Radio>
+                        <Radio label="女">女</Radio>
+                    </RadioGroup>
                 </FormItem>
                 <FormItem label="到期日期">
                     <span>{{formValidate.expireTime}}</span>
                 </FormItem>
                 <FormItem label="用户类型" prop="userType">
-                    <span>{{formValidate.expireTime}}</span>
-                </FormItem>
-               <FormItem label="手机号码" prop="userTel">
-                    <Input v-model="formValidate.userTel" placeholder="请输入手机号码！"></Input>
+                    <span>{{formValidate.userType}}</span>
                 </FormItem>
                 <FormItem label="账号余额" prop="userMoney">
-                    <Input v-model="formValidate.userMoney" placeholder="请输入账号金额！"></Input>
+                    <span>{{formValidate.userMoney}}</span>
                 </FormItem>
                 <FormItem>
-                  <i-button type="primary" @click="handleSubmit('formValidate')">修改</i-button>
+                  <i-button type="primary" @click="handleSubmit('formValidate')" style="margin-left:15px;">修改</i-button>
                 </FormItem>
             </Form>
+        </Col>
+        <Col span="6">
+          <Row>
+            <Col span="8"><h3 style="margin-bottom:20px;margin-left:15px;">登录密码:</h3></Col>
+            <Col span="16"><i-button type="text" @click="loginPwdUpdate" style="margin-left:15px;color:red;float:right;">修改</i-button></Col>
+          </Row>
+          <Form ref="formValidate" :model="password1" :rules="ruleValidate" :label-width="80" style="margin-bottom:75px;">
+                <FormItem label="原密码" prop="loginPwd">
+                    <Input type="password" v-model="password1.loginPwd" required></Input>
+                </FormItem>
+                <FormItem label="新密码" prop="loginPwdNew">
+                    <Input type="password" v-model="password1.loginPwdNew" required></Input>
+                </FormItem>
+                <FormItem label="确认密码" prop="passwdCheck1">
+                    <Input type="password" v-model="password1.passwdCheck1" required></Input>
+                </FormItem>
+            </Form>
+            <Row>
+              <Col span="8"><h3 style="margin-bottom:20px;margin-left:15px;">支付密码:</h3></Col>
+              <Col span="16"><i-button type="text" @click="payPwdUpdate" style="margin-left:15px;color:red;float:right;">修改</i-button></Col>
+            </Row>
+            <Form ref="formValidate" :model="password2" :rules="ruleValidate" :label-width="80">
+                  <FormItem label="原密码" prop="payPwd" v-if="payPwdOld">
+                      <Input type="password"  v-model="password2.payPwd" required></Input>
+                  </FormItem>
+                  <FormItem label="新密码" prop="payPwdNew">
+                      <Input type="password" v-model="password2.payPwdNew" required></Input>
+                  </FormItem>
+                  <FormItem label="确认密码" prop="passwdCheck2">
+                      <Input type="password" v-model="password2.passwdCheck2" required></Input>
+                  </FormItem>
+              </Form>
         </Col>
         <Col span="8">
             <h3 style="margin-bottom:20px;margin-left:15px;">头像信息:</h3>
@@ -92,15 +127,29 @@ export default {
     };
     return {
         formValidate: {
-        userName: '',
+          userName: '',
+          loginPwd: '',
+          userTel: '',
+          userType: '2',
+          passwdCheck: '',
+          expireTime: '',
+          userMoney: 0,
+          userImg: '../img/1.jpg',
+          userAge: '',
+          userSex: '',
+          payPwd: ''
+        },
+      password1: {
         loginPwd: '',
-        userTel: '',
-        userType: '2',
-        passwdCheck: '',
-        expireTime: '',
-        userMoney: 0,
-        userImg: '../img/1.jpg'
+        passwdCheck1: '',
+        loginPwdNew: ''
       },
+      password2: {
+        payPwd: '',
+        payPwdNew: '',
+        passwdCheck2: ''
+      },
+      payPwdOld: false,
       userImg2: require('../img/1.jpg'),
       imgData: [
         {value: require('../img/1.jpg')},
@@ -122,17 +171,6 @@ export default {
         userName: [
           { required: true, message: '请输入用户名称！', trigger: 'blur' }
         ],
-        loginPwd: [
-          { required: true, message: '请输入密码！', trigger: 'blur' },
-          { validator: validatePass, trigger: 'blur' },
-          { type: 'string', min: 6, message: '密码最少为六位！', trigger: 'blur' }
-        ],
-        passwdCheck: [
-          { required: true, message: '请再次输入密码！', trigger: 'blur' },
-          { validator: validatePassCheck, trigger: 'blur' }
-        ],
-        expireTime: [
-        ],
         userTel: [
           { required: true, message: '请输入手机号码！', trigger: 'blur' },
           { type: 'number', message: '请正确输入手机格式!', trigger: 'blur', transform(value){
@@ -144,14 +182,30 @@ export default {
             }
           } }
         ],
-        userMoney: [
-          { type: 'number', message: '请输入数字!', trigger: 'blur' }
+        userAge: [
+          {type: 'number', message: '请正确输入年龄格式!', trigger: 'blur',
+            transform(value){
+              var str = /^\d+$/
+              if(!str.test(value)){
+                if(value == ""){
+                  return ""
+                }
+                return false
+              }else{
+                if(Number(value) > 150){
+                  return false
+                }
+                return Number(value)
+              }
+            } 
+          }
         ]
       }
     }
   },
   created() {
       this.getUserInfo()
+      this.checkPayPwd()
   },
   methods: {
     getUserInfo (){
@@ -162,8 +216,142 @@ export default {
       }).then(res => {
         if(res.data.status == 0){
             var userData = res.data.data
-            
+            userData.userType = userData.userType == '1' ? '管理员' : '普通用户'
+            userData.userMoney = userData.userMoney/100
             this.formValidate = userData
+        }
+      })
+    },
+    handleSubmit (name) {
+      this.$refs[name].validate((valid) => {
+          if (valid) {
+              axios.request({
+                url: 'user/update',
+                method: 'post',
+                headers: config.header,
+                data: {
+                  userName: this.formValidate.userName,
+                  userTel: this.formValidate.userTel,
+                  userAge: this.formValidate.userAge,
+                  userSex: this.formValidate.userSex
+                }
+              }).then(res => {
+                if(res.data.status == 0){
+                  this.$Notice.success({
+                      title: '成功',
+                      desc: false ? '' : '修改成功！'
+                  });
+                  this.getUserTable()
+                }else{
+                  this.$Notice.error({
+                      title: '错误',
+                      desc: false ? '' : '修改失败！'
+                  });
+                }
+              })
+          } else {
+              this.$Message.error('请正确输入信息!')
+          }
+      })
+    },
+    loginPwdUpdate () {
+      if(this.password1.loginPwd == ""){
+        alert("请先输入原密码！")
+        return
+      }else{
+        if(this.password1.loginPwdNew.trim().length < 6){
+          alert("新密码长度不得小于6位!")
+          return
+        }else{
+          if(this.password1.passwdCheck1 == ""){
+            alert("请确认密码！")
+            return
+          }else{
+            if(this.password1.loginPwdNew != this.password1.passwdCheck1){
+              alert("两次输入密码不一样！")
+              return
+            }
+            else{
+              axios.request({
+                url: 'user/rePwd',
+                method: 'post',
+                headers: config.header,
+                data: {
+                  loginPwd: this.password1.loginPwdNew,
+                  oldPwd: this.password1.loginPwd
+                }
+              }).then(res => {
+                if(res.data.status == 0){
+                  this.$Notice.success({
+                      title: '成功',
+                      desc: false ? '' : '修改成功！'
+                  })
+                }else{
+                  this.$Notice.error({
+                      title: '错误',
+                      desc: false ? '' : '修改失败！原密码不正确!'
+                  })
+                }
+              })
+            }
+          }
+        }
+      }
+    },
+    payPwdUpdate () {
+      if(this.password2.payPwd == "" && this.payPwdOld){
+        alert("请先输入原密码！")
+        return
+      }else{
+        if(this.password2.payPwdNew.trim().length < 6){
+          alert("新密码长度不得小于6位!")
+          return
+        }else{
+          if(this.password2.passwdCheck2 == ""){
+            alert("请确认密码！")
+            return
+          }else{
+            if(this.password2.payPwdNew != this.password2.passwdCheck2){
+              alert("两次输入密码不一样！")
+              return
+            }
+            else{
+              axios.request({
+                url: 'user/rePayPwd',
+                method: 'post',
+                headers: config.header,
+                data: {
+                  payPwd: this.password2.payPwdNew,
+                  oldPwd: this.password2.payPwd
+                }
+              }).then(res => {
+                if(res.data.status == 0){
+                  this.$Notice.success({
+                      title: '成功',
+                      desc: false ? '' : '修改成功！'
+                  })
+                }else{
+                  this.$Notice.error({
+                      title: '错误',
+                      desc: false ? '' : '修改失败！原密码不正确!'
+                  })
+                }
+              })
+            }
+          }
+        }
+      }
+    },
+    checkPayPwd(){
+      axios.request({
+        url: 'user/checkPayPwd',
+        method: 'get',
+        headers: config.header
+      }).then(res => {
+        if(res.data.status == 0){
+          this.payPwdOld = true
+        }else{
+          this.payPwdOld = false
         }
       })
     },

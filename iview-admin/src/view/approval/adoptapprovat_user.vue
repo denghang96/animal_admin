@@ -14,7 +14,7 @@
       </Col>
     </Row>
     
-    <Table border :columns="columns" :data="tableData" :height="540" style="margin-top:10px">
+    <Table border :columns="columns" :data="tableData" :height="720" style="margin-top:10px">
     </Table>
     <div style="margin: 10px;overflow: hidden">
         <div style="float: right;">

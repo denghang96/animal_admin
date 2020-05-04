@@ -8,33 +8,32 @@
                         <Option v-for="item in animalList" :value="item.value" :key="item.value">{{ item.label }}</Option>
                     </Select>
                 </FormItem>
-                <FormItem label="宠物昵称:" prop="animalNmae">
-                    <Input v-model="adoptForm.animalName"></Input>
+                <FormItem label="宠物昵称:" prop="animalName">
+                    <Input v-model="adoptForm.animalName" placeholder="请输入宠物昵称" required></Input>
                 </FormItem>
                 <FormItem label="联系电话:" prop="userTel" required>
                     <Input v-model="adoptForm.userTel" placeholder="请输入联系电话"></Input>
                 </FormItem>
-                <FormItem label="宠物年龄:" prop="animalAge" required>
-                    <Input v-model="adoptForm.animalAge" placeholder="请输入领养原因"></Input>
+                <FormItem label="宠物年龄:" prop="animalAge">
+                    <Input v-model="adoptForm.animalAge" placeholder="请输入宠物年龄"></Input>
                 </FormItem>
                 <FormItem label="宠物特征:" prop="animalDesc" required>
-                    <Input v-model="adoptForm.animalDesc" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="请输入领养家庭环境"></Input>
+                    <Input v-model="adoptForm.animalDesc" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="请输入宠物特征描述"></Input>
                 </FormItem>
                 <FormItem label="宠物图片:" prop="animalProve" required>
                     <img :src="item" v-for="(item,index) in editFormImgList" width="100px" @click="removeImg(index)" height="100px">
                 </FormItem>
-                <FormItem label="申请时间:" prop="applyDate" required>
+                <FormItem label="申请时间:" prop="applyDate">
                     <DatePicker type="date" format="yyyy-MM-dd" placeholder="选择日期" v-model="adoptForm.applyDate" @on-change="getDate"></DatePicker>
                 </FormItem>
                 <Upload 
                 :action="fileUploadUrl"
                 :on-success="handleEditUploadSuccess"
                 :headers="header">
-                <Button icon="ios-cloud-upload-outline">上传家庭环境图片</Button>
+                <Button icon="ios-cloud-upload-outline">上传宠物图片</Button>
                 </Upload>
                 <FormItem style="text-align:center">
                 <Button type="primary" @click="handleSubmit1('adoptForm')">提交</Button>
-                <Button @click="handleReset1('adoptForm')" style="margin-left: 8px">重置</Button>
                 <Button @click="back()" style="margin-left: 8px">返回</Button>
                 </FormItem>
             </Form>
@@ -94,13 +93,22 @@ export default {
             },
             formValidate: {
                 animalName: [
-                { required: true, message: '请输入动物编号！', trigger: 'blur' }
+                { required: true, message: '请输入宠物昵称！', trigger: 'blur' }
                 ],
-                applyDate: [
-                { required: true, message: '请填写日期！', trigger: 'blur' }
+                userTel: [
+                { required: true, message: '请输入手机号码！', trigger: 'blur' },
+                { type: 'number', message: '请正确输入手机格式!', trigger: 'blur', transform(value){
+                    var str = /^[1][3,4,5,7,8][0-9]{9}$/;
+                    if(!str.test(value)){
+                    return false;
+                    }else{
+                    return Number(value);
+                    }
+                } }
                 ]
             },
             fileUploadUrl: axios.baseUrl + 'image/upload',
+            header: config.header,
             current: 1,
             imgList: [],
             editFormImgList:[]
@@ -134,12 +142,12 @@ export default {
         },
         handleEditUploadSuccess(res, file) {
             this.editFormImgList.push(axios.baseUrl + 'image/showImage/?path=' + res)
-            this.adoptForm.familyImg = ''
+            this.adoptForm.animalProve = ''
             for(var i = 0; i < this.editFormImgList.length;  i++) {
                 if(i > 0) {
-                this.adoptForm.familyImg = this.adoptForm.familyImg+','+ this.editFormImgList[i] + ","
+                this.adoptForm.animalProve = this.adoptForm.animalProve+','+ this.editFormImgList[i] + ","
                 }else {
-                this.adoptForm.familyImg = this.editFormImgList[i] + ","
+                this.adoptForm.animalProve = this.editFormImgList[i] + ","
                 }}
             },
         /**
@@ -157,7 +165,7 @@ export default {
             }
         },
         handleSubmit1(){
-            if(this.adoptForm.animalDesc == "" && this.adoptForm.animalDesc == "" && this.adoptForm.animalProve == ""&& this.adoptForm.userTel == "" && this.userAge == ""){
+            if(this.adoptForm.animalDesc == "" || this.adoptForm.animalDesc == "" || this.adoptForm.animalProve == "" || this.adoptForm.userTel == ""){
                 alert("请输入必填信息!")
                 return
             }
@@ -185,16 +193,6 @@ export default {
         //返回
         back(){
             this.$router.replace("myFoster") 
-        },
-        comment(){
-            axios.request({
-                url: 'comment/add',
-                method: 'post',
-                headers: config.header,
-                data: this.form
-            }).then(res => {
-                this.$Message.success("操作成功！")
-            })
         }
     }
 }

@@ -22,13 +22,9 @@
       </Col>
     </Row>
     
-    <Table border :columns="columns" :data="tableData" :height="540" style="margin-top:10px">
+    <Table border :columns="columns" :data="tableData" :height="720" style="margin-top:10px">
       <template slot-scope="{ row, index }" slot="action">
-        <Button type="primary" size="small" style="margin-right: 5px" v-if="row.applyStatus!='待审批'" @click="editFoster(index)">查看详情</Button>
-        <Button type="primary" size="small" style="margin-right: 5px" v-if="row.applyStatus=='待审批'" @click="editFoster(index)">审核</Button>
-        <Button type="success" size="small" style="margin-right: 5px" v-if="row.applyStatus=='审批通过'" @click="arrive(index)">宠物到店</Button>
-        <Button type="success" size="small" style="margin-right: 5px" v-if="row.applyStatus=='正在寄养'" @click="settleOpen(index)">结算</Button>
-        <Button type="error" size="small" style="margin-right: 5px" v-if="row.applyStatus!='已结算'" @click="reset(index)">重置状态</Button>
+        <Button type="primary" size="small" style="margin-right: 5px" v-if="row.applyStatus!='待审批'" @click="editFoster(index)">详情</Button>
       </template>
     </Table>
     <div style="margin: 10px;overflow: hidden">

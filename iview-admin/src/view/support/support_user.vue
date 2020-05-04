@@ -4,12 +4,14 @@
       <Col span="4" style="margin-left:5px">    
         <DatePicker type="date" format="yyyy-MM-dd" placeholder="助养日期" v-model="query.helpDate" @on-change="getDate" style="width:250px"></DatePicker>
       </Col>
+      <Col span="4" style="margin-left:5px"><Input v-model="query.animalNo" placeholder="动物编号" /></Col>
+      <Col span="4" style="margin-left:5px"><Input v-model="query.animalName" placeholder="动物昵称" /></Col>
       <Col span="4" style="margin-left:5px">
         <Button type="primary" @click="getSupportTable">查询</Button>
       </Col>
     </Row>
     
-    <Table border :columns="columns" :data="tableData" :height="540" style="margin-top:10px"></Table>
+    <Table border :columns="columns" :data="tableData" :height="720" style="margin-top:10px"></Table>
     <div style="margin: 10px;overflow: hidden">
         <div style="float: right;">
             <Page :page-size="pageSize" :total="total" :current="current" @on-change="changePage" ></Page>
@@ -57,7 +59,9 @@ export default {
       ],
       tableData: [],
       query: {
-        helpDate: ''
+        helpDate: '',
+        animalNo: '',
+        animalName: ''
       },
       header: config.header
     }
@@ -79,11 +83,13 @@ export default {
           size: 10,
           userId: JSON.parse(localStorage.getItem("user")).id,
           helpDate: this.query.helpDate,
+          animalName: this.query.animalName,
+          animalNo: this.query.animalNo
         }
       }).then(res => {
         if(res.data.status == 0){
           for(var i = 0; i < res.data.data.records.length; i++){
-            res.data.data.records[i].animalMoney = res.data.data.records[i].animalMoney/100
+            res.data.data.records[i].helpMoney = parseInt(res.data.data.records[i].helpMoney)/100
           }
           this.tableData = res.data.data.records
           this.total = parseInt(res.data.data.total)

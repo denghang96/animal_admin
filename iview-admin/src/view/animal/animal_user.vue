@@ -1,7 +1,24 @@
 <template>
     <div>
-        <Scroll :on-reach-bottom="handleReachBottom" height="500" loading-text="加载更多">
-            <Card style="width:350px;display: inline-block; margin: 15px;" v-for="(item,index) in tableData">
+        <div style="width:100%;height:35px;margin-left:15px;margin-top:5px;">
+            <Row class="code-row-bg">
+                <Col span="4">    
+                    <Select v-model="query.animalType" placeholder="宠物类型" clearable>
+                    <Option v-for="item in animalList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                    </Select>
+                </Col>
+                <Col span="4" style="margin-left:5px">    
+                    <Select v-model="query.animalStatus" placeholder="动物状态" clearable>
+                    <Option v-for="item in animalList2" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                    </Select>
+                </Col>
+                <Col span="4" style="margin-left:5px">
+                    <Button type="primary" @click="getAnimalTableQuery">查询</Button>
+                </Col>
+            </Row>
+        </div>
+        <Scroll :on-reach-bottom="handleReachBottom" height="750" loading-text="加载更多">
+            <Card style="width:350px;display: inline-block; margin: 10px 15px;" v-for="(item,index) in tableData">
                 <p slot="title">
                     <Icon :type="item.type"></Icon>
                     {{item.projectType}}
@@ -58,7 +75,7 @@ export default {
                 animalType: '',
                 animalNo: '',
                 animalName: '',
-                animalStatus: ''
+                animalStatus: '待助养,待领养'
             },
             modal1: false,
             modal2: false,
@@ -70,6 +87,34 @@ export default {
                 payPwd: '',
                 animalId: ''
             },
+            animalList: [
+                {
+                    value: '猫',
+                    label: '猫'
+                },
+                {
+                    value: '狗',
+                    label: '狗'
+                },
+                {
+                    value: '鼠',
+                    label: '鼠'
+                },
+                {
+                    value: '其他',
+                    label: '其他'
+                }
+            ],
+            animalList2: [
+                {
+                    value: '待领养',
+                    label: '领养'
+                },
+                {
+                    value: '待助养',
+                    label: '助养'
+                }
+            ],
             tableDataIndex: 0
         }
     },
@@ -79,6 +124,14 @@ export default {
     methods: {
         changeLimit () {
             this.limitFrom = this.limitFrom === 0 ? 5 : 0;
+        },
+        getAnimalTableQuery() {
+            this.tableData = []
+            if(this.query.animalStatus == undefined){
+                this.query.animalStatus = '待助养,待领养'
+            }
+            this.current = 1
+            this.getAnimalTable()
         },
         /**
          * 根据条件查询动物列表
@@ -90,11 +143,11 @@ export default {
                 headers: config.header,
                 params: {
                 current: this.current,
-                size: 10,
+                size: 8,
                 animalType: this.query.animalType,
                 animalNo: this.query.animalNo,
                 animalName: this.query.animalName,
-                animalStatus: "待助养,待领养",
+                animalStatus: this.query.animalStatus
                 }
             }).then(res => {
                 if(res.data.status == 0){
@@ -108,9 +161,9 @@ export default {
                         this.$set(res.data.data.records[i],"type","ios-paw")
                     }
                 }
-                this.tableData = this.tableData.concat(res.data.data.records)
-                this.total = parseInt(res.data.data.total)
-                this.current = parseInt(res.data.data.current)
+                    this.tableData = this.tableData.concat(res.data.data.records)
+                    this.total = parseInt(res.data.data.total)
+                    this.current = parseInt(res.data.data.current) + 1
                 }
             })
         },
@@ -178,7 +231,7 @@ export default {
             }).then(res => {
                 this.$Message.success(this.tableData[this.tableDataIndex].animalName + '感谢你!')
                 this.tableData = []
-                this.getAnimalTable()
+                this.getAnimalTableQuery()
             })
          },
          cancel2(){
