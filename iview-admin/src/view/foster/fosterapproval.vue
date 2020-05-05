@@ -2,7 +2,7 @@
   <div>
     <Row class="code-row-bg">
       <Col span="4">
-        <Select v-model="query.animalType" placeholder="动物类型">
+        <Select v-model="query.animalType" placeholder="动物类型" clearable>
           <Option v-for="item in animalList" :value="item.value" :key="item.value">{{ item.label }}</Option>
         </Select>
       </Col>
@@ -135,9 +135,9 @@ export default {
   },
   data () {
   return {
-      total: 100,
+      total: 0,
       current: 1,
-      pageSize: 6,
+      pageSize:10,
       formValidate: {
         opinion: [
           { required: true, message: '请输入审核意见', trigger: 'blur' }

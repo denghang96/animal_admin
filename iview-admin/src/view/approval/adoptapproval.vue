@@ -94,9 +94,9 @@ export default {
   },
   data () {
   return {
-      total: 100,
+      total: 0,
       current: 1,
-      pageSize: 6,
+      pageSize: 10,
       formValidate: {
         opinion: [
           { required: true, message: '请输入审核意见', trigger: 'blur' }
@@ -193,7 +193,7 @@ export default {
         headers: config.header,
         params: {
           current: this.current,
-          size: 10,
+          size: this.pageSize,
           applyDate: this.query.applyDate,
           applyStatus: this.query.applyStatus,
           userName: this.query.userName

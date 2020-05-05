@@ -192,9 +192,9 @@ export default {
   },
   data () {
     return {
-      total: 100,
+      total: 0,
       current: 1,
-      pageSize: 6,
+      pageSize: 10,
       formValidate: {
         animalNo: [
           { required: true, message: '请输入动物编号！', trigger: 'blur' }
@@ -425,7 +425,7 @@ export default {
         headers: config.header,
         params: {
           current: this.current,
-          size: 10,
+          size: this.pageSize,
           animalType: this.query.animalType,
           animalNo: this.query.animalNo,
           animalName: this.query.animalName,
