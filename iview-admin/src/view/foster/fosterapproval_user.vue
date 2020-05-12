@@ -158,7 +158,7 @@ export default {
       },
       header: config.header,
       editFormImgList: [],
-      isShow: true,
+      isShow: true
     }
   },
   created() {

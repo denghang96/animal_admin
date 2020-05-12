@@ -120,7 +120,6 @@ export default {
         }},
         { title: '动物昵称', key: 'animalName'},
         { title: '动物编号', key: 'animalNo'},
-        { title: '动物昵称', key: 'animalName' },
         { title: '动物特征', key: 'animalFeatures' },
         { title: '申请日期', key: 'applyDate' },
         { title: '申请原因', key: 'adoptReason' },
@@ -238,7 +237,8 @@ export default {
           current: this.current,
           size: this.pageSize,
           applyDate: this.query.applyDate,
-          applyStatus: this.query.applyStatus
+          applyStatus: this.query.applyStatus,
+          userId: JSON.parse(localStorage.getItem("user")).id
         }
       }).then(res => {
         if(res.data.status == 0){

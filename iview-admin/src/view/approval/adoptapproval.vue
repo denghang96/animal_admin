@@ -106,7 +106,22 @@ export default {
         { title: '申请人', key: 'userName'},
         { title: '动物昵称', key: 'animalName'},
         { title: '动物编号', key: 'animalNo'},
-        { title: '动物昵称', key: 'animalName' },
+        { title: '动物图片', slot: 'animalTiltleImg', editable: true ,render: (h, params) => {
+          return h('div', [
+            h('img', {
+              domProps: {
+                'src': params.row.animalTiltleImg
+              },
+              style: {
+                display: 'block',
+                width: '30px',
+                height: '30px',
+                borderRadius: '3px',
+                // margin: '0 auto'
+              },
+            })
+          ])
+        }},
         { title: '申请日期', key: 'applyDate' },
         { title: '申请状态', key: 'applyStatus' },
         { title: '申请原因', key: 'adoptReason' },
