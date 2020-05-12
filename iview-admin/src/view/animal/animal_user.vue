@@ -224,14 +224,27 @@ export default {
          },
          ok2(){
              axios.request({
-                url: 'support/add',
-                method: 'post',
+                url: 'user/checkPayPwdIsOk',
+                method: 'get',
                 headers: config.header,
-                data: this.payAnimal
+                params: {
+                    'payPwd': this.payAnimal.payPwd
+                }
             }).then(res => {
-                this.$Message.success(this.tableData[this.tableDataIndex].animalName + '感谢你!')
-                this.tableData = []
-                this.getAnimalTableQuery()
+                if(res.data.status == 1){
+                    this.$Message.error('支付密码错误!')
+                }else{
+                    axios.request({
+                        url: 'support/add',
+                        method: 'post',
+                        headers: config.header,
+                        data: this.payAnimal
+                    }).then(res => {
+                        this.$Message.success(this.tableData[this.tableDataIndex].animalName + '感谢你!')
+                        this.tableData = []
+                        this.getAnimalTableQuery()
+                    })
+                }
             })
          },
          cancel2(){

@@ -42,6 +42,8 @@
                 <Upload 
                 :action="fileUploadUrl"
                 :on-success="handleEditUploadSuccess"
+                :max-size="2048"
+                :on-exceeded-size="handleMaxSize"
                 :headers="header">
                 <Button icon="ios-cloud-upload-outline">上传家庭环境图片</Button>
                 </Upload>
@@ -152,6 +154,7 @@ export default {
                     this.adoptForm.animalName = res.data.data.animalName
                     this.adoptForm.animalMoney = res.data.data.animalMoney / 100
                     this.adoptForm.animalType = res.data.data.animalType
+                    this.payMoney = res.data.data.animalMoney / 100
 
                 }
             })
@@ -185,14 +188,17 @@ export default {
         },
         handleSubmit1(){
             axios.request({
-                url: 'adopt/add',
-                method: 'post',
-                headers: config.header,
-                data: this.adoptForm
+                url: 'user/checkPayPwd',
+                method: 'get',
+                headers: config.header
             }).then(res => {
-                if(res.data.status == 0) {
-                    this.$Message.success("提交申请成功，请耐心等待审批！");
-                    this.back()
+                if(res.data.status == "1"){
+                    this.$Message.error('请先设置支付密码！')
+                    this.modal1 = true
+                    
+                }else{
+                    this.modal2 = true
+                    this.payAnimal.animalId = this.tableData[index].id
                 }
             })
         },
@@ -236,21 +242,44 @@ export default {
          cancel(){
 
          },
+         //先判断输入的支付密码是否正确，正确之后再提交申请
          ok2(){
              axios.request({
-                url: 'support/add',
-                method: 'post',
+                url: 'user/checkPayPwdIsOk',
+                method: 'get',
                 headers: config.header,
-                data: this.payAnimal
+                params: {
+                    'payPwd': this.payAnimal.payPwd
+                }
             }).then(res => {
-                this.$Message.success(this.tableData[this.tableDataIndex].animalName + '感谢你!')
-                this.tableData = []
-                this.getAnimalTableQuery()
+                if(res.data.status == 1){
+                    this.$Message.error('支付密码错误!')
+                }else{
+                    axios.request({
+                        url: 'adopt/add',
+                        method: 'post',
+                        headers: config.header,
+                        data: this.adoptForm
+                    }).then(res => {
+                        if(res.data.status == 0) {
+                            this.$Message.success("提交申请成功，请耐心等待审批！");
+                            this.back()
+                        }
+                    })
+                }
             })
+             
          },
          cancel2(){
 
          },
+         //文件上传太大提醒
+         handleMaxSize (file) {
+            this.$Notice.warning({
+                title: '超出文件大小限制',
+                desc: '文件 ' + file.name + ' 太大，不能超过 2M。'
+            })
+        },
     }
 }
 </script>

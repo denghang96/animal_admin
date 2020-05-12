@@ -71,6 +71,8 @@
                     <Upload 
                     :action="fileUploadUrl"
                     :on-success="handleEditUploadSuccess"
+                    :max-size="2048"
+                    :on-exceeded-size="handleMaxSize"
                     :headers="header">
                     <Button style="float:left;" icon="ios-cloud-upload-outline">上传头像图片</Button>
                     </Upload>
@@ -379,7 +381,14 @@ export default {
           }
         })
       }
-    }
+    },
+    //文件上传太大提醒
+    handleMaxSize (file) {
+      this.$Notice.warning({
+          title: '超出文件大小限制',
+          desc: '文件 ' + file.name + ' 太大，不能超过 2M。'
+      })
+    },
 }}
 </script>
 <style>
