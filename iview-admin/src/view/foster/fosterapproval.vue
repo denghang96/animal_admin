@@ -24,8 +24,9 @@
         <Button type="primary" size="small" style="margin-right: 5px" v-if="row.applyStatus!='待审批'" @click="editFoster(index)">查看详情</Button>
         <Button type="primary" size="small" style="margin-right: 5px" v-if="row.applyStatus=='待审批'" @click="editFoster(index)">审核</Button>
         <Button type="success" size="small" style="margin-right: 5px" v-if="row.applyStatus=='审批通过'" @click="arrive(index)">宠物到店</Button>
-        <Button type="success" size="small" style="margin-right: 5px" v-if="row.applyStatus=='正在寄养'" @click="settleOpen(index)">结算</Button>
+        <Button type="success" size="small" style="margin-right: 5px" v-if="row.applyStatus=='正在寄养'&&row.applyStatus!='已结算'" @click="settleOpen(index)">结算</Button>
         <Button type="error" size="small" style="margin-right: 5px" v-if="row.applyStatus!='已结算'" @click="reset(index)">重置状态</Button>
+        <Button type="error" size="small" style="margin-right: 5px" v-if="row.applyStatus!='正在寄养'" @click="deleteFoster(index)">删除</Button>
       </template>
     </Table>
     <div style="margin: 10px;overflow: hidden">
@@ -151,7 +152,7 @@ export default {
         { title: '申请日期', key: 'applyDate' },
         { title: '申请状态', key: 'applyStatus' },
         { title: '预留电话', key: 'userTel' },
-        { title: '操作',slot: 'action', width: 250}
+        { title: '操作',slot: 'action', width: 300}
       ],
       animalList: [
         {
@@ -382,6 +383,25 @@ export default {
       this.getMoney()
     },
     /**
+     * 删除
+     */
+    deleteFoster(index) {
+      var isdelete = confirm("确认删除第【"+index+1+"】行数据吗")
+      if(!isdelete) {
+        retrun
+      }else {
+        axios.request({
+          url: 'foster/del',
+          method: 'post',
+          headers: config.header,
+          data: [this.tableData[index].id]
+        }).then(res => {
+          this.$Message.success('删除成功')
+          this.getFosterTable()
+        })
+      }
+    },
+    /**
      * 查询应付费与用户余额
      */
     getMoney() {
@@ -422,6 +442,7 @@ export default {
         data: this.settleform
       }).then(res => {
          this.$Message.success('结算成功！');
+         this.getFosterTable()
       })
     },
     getDate(value){

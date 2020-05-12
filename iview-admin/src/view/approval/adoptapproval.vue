@@ -20,6 +20,7 @@
     <Table border :columns="columns" :data="tableData" :height="540" style="margin-top:10px">
       <template slot-scope="{ row, index }" slot="action">
           <Button type="primary" size="small" style="margin-right: 5px" @click="editadopt(index)">审核</Button>
+          <Button type="error" size="small" style="margin-right: 5px" @click="deleteAdopt(index)">删除</Button>
       </template>
     </Table>
     <div style="margin: 10px;overflow: hidden">
@@ -174,6 +175,25 @@ export default {
     this.getAdoptTable()
   },
   methods: {
+    /**
+     * 删除
+     */
+    deleteAdopt(index) {
+      var isdelete = confirm("确认删除第【"+(index+1)+"】行数据吗")
+      if(!isdelete) {
+        retrun
+      }else {
+        axios.request({
+          url: 'adopt/del',
+          method: 'post',
+          headers: config.header,
+          data: [this.tableData[index].id]
+        }).then(res => {
+          this.$Message.success('删除成功')
+          this.getAdoptTable()
+        })
+      }
+    },
     /**
      * 打开审核的模态框
      */
