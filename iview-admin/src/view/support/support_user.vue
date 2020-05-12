@@ -31,9 +31,9 @@ export default {
   },
   data () {
     return {
-      total: 100,
+      total: 0,
       current: 1,
-      pageSize: 6,
+      pageSize: 10,
       columns: [
           { title: '动物图片', slot: 'animalTiltleImg', editable: true ,render: (h, params) => {
           return h('div', [
@@ -80,7 +80,7 @@ export default {
         headers: config.header,
         params: {
           current: this.current,
-          size: 10,
+          size: this.pageSize,
           userId: JSON.parse(localStorage.getItem("user")).id,
           helpDate: this.query.helpDate,
           animalName: this.query.animalName,

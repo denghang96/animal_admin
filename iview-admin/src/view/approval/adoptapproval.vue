@@ -95,9 +95,9 @@ export default {
   },
   data () {
   return {
-      total: 100,
+      total: 0,
       current: 1,
-      pageSize: 6,
+      pageSize: 10,
       formValidate: {
         opinion: [
           { required: true, message: '请输入审核意见', trigger: 'blur' }
@@ -107,7 +107,22 @@ export default {
         { title: '申请人', key: 'userName'},
         { title: '动物昵称', key: 'animalName'},
         { title: '动物编号', key: 'animalNo'},
-        { title: '动物昵称', key: 'animalName' },
+        { title: '动物图片', slot: 'animalTiltleImg', editable: true ,render: (h, params) => {
+          return h('div', [
+            h('img', {
+              domProps: {
+                'src': params.row.animalTiltleImg
+              },
+              style: {
+                display: 'block',
+                width: '30px',
+                height: '30px',
+                borderRadius: '3px',
+                // margin: '0 auto'
+              },
+            })
+          ])
+        }},
         { title: '申请日期', key: 'applyDate' },
         { title: '申请状态', key: 'applyStatus' },
         { title: '申请原因', key: 'adoptReason' },
@@ -213,7 +228,7 @@ export default {
         headers: config.header,
         params: {
           current: this.current,
-          size: 10,
+          size: this.pageSize,
           applyDate: this.query.applyDate,
           applyStatus: this.query.applyStatus,
           userName: this.query.userName

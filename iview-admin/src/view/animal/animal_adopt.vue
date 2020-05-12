@@ -18,6 +18,15 @@
                 <FormItem label="联系地址:" prop="adoptAddress" required>
                     <Input v-model="adoptForm.adoptAddress" placeholder="请输入联系地址"></Input>
                 </FormItem>
+                <FormItem label="运输方式:" prop="traffiType" required>
+                    <Input v-model="adoptForm.traffiType" placeholder="请输入运输方式"></Input>
+                </FormItem>
+                <FormItem label="是否有小孩" prop="hasChildren">
+                    <RadioGroup v-model="adoptForm.hasChildren">
+                        <Radio label="是">是</Radio>
+                        <Radio label="否">否</Radio>
+                    </RadioGroup>
+                </FormItem>
                 <FormItem label="领养原因:" prop="adoptReason" required>
                     <Input v-model="adoptForm.adoptReason" placeholder="请输入领养原因"></Input>
                 </FormItem>
@@ -43,6 +52,23 @@
                 </FormItem>
             </Form>
         </Col>
+        <Col span="6">
+            <Modal
+                v-model="modal1"
+                title="设置支付密码"
+                @on-ok="ok"
+                @on-cancel="cancel">
+                <Input v-model="form.payPwd" type="password" placeholder="请输入密码！" style="width: 300px" required/>
+            </Modal>
+            <Modal
+                v-model="modal2"
+                title="输入支付密码"
+                @on-ok="ok2"
+                @on-cancel="cancel2">
+                <h3 style="color:red;">￥{{payMoney}}</h3>
+                <Input v-model="payAnimal.payPwd" type="password" placeholder="请输入密码！" style="width: 300px" required/>
+            </Modal>
+        </Col>
     </Row>
         
     </div>
@@ -64,6 +90,16 @@ export default {
             form:{
                 amimalId: '',
                 comment: '',
+            },
+            modal1: false,
+            modal2: false,
+            payMoney: 0,
+            form: {
+                payPwd: ''
+            },
+            payAnimal: {
+                payPwd: '',
+                animalId: ''
             },
             //领养表单
             adoptForm: {
@@ -114,7 +150,7 @@ export default {
             }).then(res => {
                 if(res.data.status == 0){
                     this.adoptForm.animalName = res.data.data.animalName
-                    this.adoptForm.animalMoney = res.data.data.animalMoney
+                    this.adoptForm.animalMoney = res.data.data.animalMoney / 100
                     this.adoptForm.animalType = res.data.data.animalType
 
                 }
@@ -182,7 +218,39 @@ export default {
             }).then(res => {
                 this.$Message.success("操作成功！")
             })
-        }
+        },
+        ok(){
+             axios.request({
+                url: 'user/setPayPwd',
+                method: 'post',
+                headers: config.header,
+                data:this.form
+            }).then(res => {
+                if(res.data.status == "1"){
+                    this.$Message.error('设置密码失败！')
+                }else{
+                    this.$Message.success('设置密码成功！')
+                }
+            })
+         },
+         cancel(){
+
+         },
+         ok2(){
+             axios.request({
+                url: 'support/add',
+                method: 'post',
+                headers: config.header,
+                data: this.payAnimal
+            }).then(res => {
+                this.$Message.success(this.tableData[this.tableDataIndex].animalName + '感谢你!')
+                this.tableData = []
+                this.getAnimalTableQuery()
+            })
+         },
+         cancel2(){
+
+         },
     }
 }
 </script>

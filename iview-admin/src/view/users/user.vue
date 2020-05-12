@@ -138,9 +138,9 @@ export default {
       userSexSearch2: '',
       tableData: [],
       userData: '',
-      total: 100,
+      total: 0,
       current: 1,
-      pageSize: 6,
+      pageSize: 10,
       modal1: false,
       modal2: false,
       userMoney2: 0,
@@ -242,7 +242,7 @@ export default {
         headers: config.header,
         params: {
           current: this.current,
-          size: 10
+          size: this.pageSize
         }
       }).then(res => {
         if(res.data.status == 0){
