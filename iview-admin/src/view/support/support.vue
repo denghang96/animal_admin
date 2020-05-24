@@ -18,7 +18,11 @@
       </Col>
     </Row>
     
-    <Table border :columns="columns" :data="tableData" :height="540" style="margin-top:10px"></Table>
+    <Table border :columns="columns" :data="tableData" :height="540" style="margin-top:10px">
+      <template slot-scope="{ row, index }" slot="action">
+          <Button type="error" size="small" @click="remove(index)">删除</Button>
+      </template>
+    </Table>
     <div style="margin: 10px;overflow: hidden">
         <div style="float: right;">
             <Page :page-size="pageSize" :total="total" :current="current" @on-change="changePage" ></Page>
@@ -46,7 +50,8 @@ export default {
         { title: '动物昵称', key: 'animalName'},
         { title: '助养者名称', key: 'userName'},
         { title: '助养日期', key: 'helpDate' },
-        { title: '助养金额', key: 'helpMoney' }
+        { title: '助养金额', key: 'helpMoney' },
+        { title: '操作',slot: 'action'}
       ],
       tableData: [],
       query: {
@@ -85,6 +90,9 @@ export default {
             res.data.data.records[i].animalMoney = res.data.data.records[i].animalMoney/100
           }
           _this.tableData = res.data.data.records
+           for(var i = 0; i <  _this.tableData.length; i++) {
+             _this.tableData[i].helpMoney = _this.tableData[i].helpMoney/100
+           }
           _this.total = parseInt(res.data.data.total)
         }
       })
@@ -99,6 +107,22 @@ export default {
     getDate(value){
       this.query.helpDate = value
     },
+    remove(index) {
+      if(!confirm("确认删除？")) return;
+      let _this = this
+      axios.request({
+        url: 'support/del',
+        method: 'post',
+        headers: config.header,
+        data: [this.tableData[index].id]
+      }).then(res => {
+          this.$Notice.success({
+            title: '成功',
+            desc: false ? '' : '删除成功！'
+          });
+          _this.getSupportTable()
+      })
+    }
   }
 }
 </script>
