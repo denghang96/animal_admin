@@ -64,7 +64,7 @@
                 <Input v-model="form.animalFeatures" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="请输入动物习性"></Input>
             </FormItem>
             <FormItem label="封面图" prop="animalTiltleImg">
-                <img :src="form.animalTiltleImg" width="100px" height="100px">
+                <img :src="form.animalTiltleImg" width="100px" height="100px" v-if="form.animalTiltleImg">
             </FormItem>
             <FormItem label="动物图片" prop="animalImg">
                 <img :src="item" v-for="(item, index) in imgList" width="100px" height="100px" @click="removeAddImg(index)">
@@ -73,6 +73,7 @@
                 <DatePicker type="date" format="yyyy-MM-dd" placeholder="选择日期" v-model="form.animalDate" @on-change="getDate"></DatePicker>
             </FormItem>
             <Upload 
+              ref="mainImg"
               :action="fileUploadUrl"
               :on-success="handleUploadSinggleSuccess"
               :max-size="2048"
@@ -81,6 +82,7 @@
               <Button icon="ios-cloud-upload-outline">上传封面图片</Button>
             </Upload>
             <Upload 
+              ref="animalImgs"
               :action="fileUploadUrl"
               :on-success="handleUploadSuccess"
               :max-size="2048"
@@ -154,7 +156,6 @@
             </Upload>
             <FormItem style="text-align:center">
               <Button type="primary" @click="handleSubmit1('form1')">提交</Button>
-              <Button @click="handleReset1('form1')" style="margin-left: 8px">重置</Button>
             </FormItem>
         </Form>
     </Modal>
@@ -422,6 +423,9 @@ export default {
      */
     handleReset (name) {
         this.$refs[name].resetFields();
+        this.imgList = []
+      this.$refs.mainImg.clearFiles()
+      this.$refs.animalImgs.clearFiles()
     },
     /**
      * 根据条件查询动物列表
@@ -446,6 +450,7 @@ export default {
             res.data.data.records[i].animalMoney = res.data.data.records[i].animalMoney/100
           }
           this.tableData = res.data.data.records
+          console.log(this.tableData)
           this.total = parseInt(res.data.data.total)
         }
       })

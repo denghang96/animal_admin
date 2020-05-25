@@ -93,6 +93,7 @@ export default {
                         this.animalImgs.pop()
                     }
                     this.animalData = res.data.data
+                    this.animalData.animalMoney = this.animalData.animalMoney/100
                 }
             })
         },
