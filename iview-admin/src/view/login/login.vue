@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import LoginForm from '_c/login-form'
+import LoginForm from '_c/login-form' //-c componet/login-form 登录
 import { mapActions } from 'vuex'
 import config from '@/config/index'
 export default {

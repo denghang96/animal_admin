@@ -252,8 +252,8 @@ export default {
             label: '狗'
         },
         {
-            value: '鼠',
-            label: '鼠'
+            value: '兔',
+            label: '兔'
         },
         {
             value: '其他',
@@ -425,6 +425,7 @@ export default {
     },
     /**
      * 根据条件查询动物列表
+     * headers包含token，都以Baear开头
      */
     getAnimalTable(){
       axios.request({
@@ -489,7 +490,7 @@ export default {
      */
     edit(index) {
       this.editform.animalMoney = this.editform.animalMoney*100
-      debugger
+
       if(this.editform.projectType == "领养") {
         this.editform.animalStatus = "待领养"
       } else if(this.editform.projectType == "寄养") {

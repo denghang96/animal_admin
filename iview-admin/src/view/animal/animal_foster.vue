@@ -72,8 +72,8 @@ export default {
                     label: '狗'
                 },
                 {
-                    value: '鼠',
-                    label: '鼠'
+                    value: '兔',
+                    label: '兔'
                 },
                 {
                     value: '其他',

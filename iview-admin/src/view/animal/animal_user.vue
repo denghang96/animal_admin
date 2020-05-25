@@ -64,7 +64,7 @@
 import config from '@/config/index'
 import axios from '@/libs/api.request'
 export default {
-    data(){
+    data(){//和上面的HTML标签
         return {
             limitNum: 5,
             limitFrom: 0,
@@ -97,8 +97,8 @@ export default {
                     label: '狗'
                 },
                 {
-                    value: '鼠',
-                    label: '鼠'
+                    value: '兔',
+                    label: '兔'
                 },
                 {
                     value: '其他',
@@ -118,7 +118,7 @@ export default {
             tableDataIndex: 0
         }
     },
-    created() {
+    created() {//页面一加载就执行created中的方法
         this.getAnimalTable()
     },
     methods: {
@@ -142,19 +142,19 @@ export default {
                 method: 'get',
                 headers: config.header,
                 params: {
-                current: this.current,
-                size: 8,
-                animalType: this.query.animalType,
+                current: this.current,//current、animalType等相当于在上面的data中取数据
+                size: 8,//current、size为分页数据，对应后台AAnimalController.java中getList方法的page
+                animalType: this.query.animalType,//animalType等在QueryListVo.java中定义
                 animalNo: this.query.animalNo,
                 animalName: this.query.animalName,
                 animalStatus: this.query.animalStatus
                 }
             }).then(res => {
-                if(res.data.status == 0){
+                if(res.data.status == 0){//为0说明业务代码成功，返回数据
                 for(var i = 0; i < res.data.data.records.length; i++){
                     res.data.data.records[i].animalMoney = res.data.data.records[i].animalMoney/100
                     if(res.data.data.records[i].animalStatus == "待助养"){
-                        this.$set(res.data.data.records[i],"label","我要帮助它！")
+                        this.$set(res.data.data.records[i],"label","我要帮助它！")//相当于在上面的params添加label和type属性
                         this.$set(res.data.data.records[i],"type","ios-paw-outline")
                     }else{
                         this.$set(res.data.data.records[i],"label","我要带它回家！")
